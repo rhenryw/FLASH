@@ -21,11 +21,11 @@ sections:
       items:
         - label: "Home"
           href: "#home"
-        - label: "Why FLASH"
+        - label: "Why"
           href: "#why"
         - label: "BITs"
           href: "#bits"
-        - label: "Get Started"
+        - label: "Start"
           href: "#start"
 
   - type: site-header
@@ -35,46 +35,94 @@ sections:
       background:
         color: "#111827"
       textColor: "#E5E7EB"
-      height: 220
+      height: 240
+      id: home
 
-  - text:
-      content: "FLASH lets you describe pages in YAML and extend with BITs."
+  - type: spacer
+    config:
+      size: 12
+
+  - type: headline
+    config:
+      text: "Why FLASH"
+      size: 28
       color: "#E5E7EB"
-      style:
-        align:
-          horizontal: center
+      id: why
 
-  - text:
-      content: "Why FLASH: Declarative, fast, and hackable. YAML is the UI; BITs are the building blocks."
+  - type: paragraph
+    config:
+      text: "Declarative, fast, and hackable. YAML is the UI; BITs are the building blocks."
       color: "#CBD5E1"
-      style:
-        align:
-          horizontal: center
+      size: 16
 
-  - text:
-      content: "What are BITs: Reusable units defined in this repo. They can inject CSS and run JS to render anything from banners to widgets."
-      color: "#A3A3A3"
-      style:
-        align:
-          horizontal: center
-
-  - text:
-      content: "Customization: Each BIT accepts options in your YAML—colors, text, sizing, alignment, behaviors, and more."
+  - type: paragraph
+    config:
+      text: "Define your page structure in YAML, then drop in reusable BITs for headers, menus, banners, widgets, and more."
       color: "#9CA3AF"
-      style:
-        align:
-          horizontal: center
 
-  - text:
-      content: "Try it: Add a new section with type: blue-circle or nav-menu, tweak the values, and refresh."
+  - type: divider
+    config:
+      color: "#FFFFFF"
+      margin: 24
+
+  - type: headline
+    config:
+      text: "What are BITs"
+      size: 28
+      color: "#E5E7EB"
+      id: bits
+
+  - type: paragraph
+    config:
+      text: "BITs are small components defined in this repo. They can inject CSS and run JS to render anything—from a hero to a pulsing background."
+      color: "#CBD5E1"
+
+  - type: paragraph
+    config:
+      text: "Anyone can author a BIT. Add a YAML file to the bits directory and reference it by name in your page."
       color: "#9CA3AF"
-      style:
-        align:
-          horizontal: center
+
+  - type: cta-button
+    config:
+      label: "View BIT Authoring"
+      href: "#start"
+      background: "#7AA2F7"
+      textColor: "#0B0B0F"
+      size: 16
+
+  - type: spacer
+    config:
+      size: 24
 
   - type: blue-circle
     config:
-      size: 160
+      size: 180
       color: "#2563EB"
-      glow: 1.4
-      opacity: 0.65
+      glow: 1.0
+      opacity: 0.5
+
+  - type: headline
+    config:
+      text: "Get Started"
+      size: 28
+      color: "#E5E7EB"
+      id: start
+
+  - type: paragraph
+    config:
+      text: "Fork the repo, add your BIT YAML to bits/, then reference it in your flash.yaml."
+      color: "#CBD5E1"
+
+  - type: paragraph
+    config:
+      text: "Open example/index.html in a static server and tweak the YAML to iterate quickly."
+      color: "#9CA3AF"
+
+  - type: spacer
+    config:
+      size: 32
+
+  - type: footer
+    config:
+      text: "Built with FLASH."
+      color: "#9CA3AF"

@@ -1,0 +1,18 @@
+Name: footer
+CSS: |
+  [data-bit="footer"] {
+    width: 100%;
+    padding: 24px 16px;
+    opacity: 0.8;
+  }
+  [data-bit="footer"] .inner {
+    text-align: center;
+    font-size: 13px;
+  }
+JS: |
+  const { container, config, utils } = ctx;
+  const inner = document.createElement('div');
+  inner.className = 'inner';
+  inner.style.color = utils.normalizeColor(config.color || '#9CA3AF');
+  inner.textContent = config.text || '';
+  container.appendChild(inner);

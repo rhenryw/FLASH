@@ -1,0 +1,9 @@
+Name: spacer
+CSS: |
+  [data-bit="spacer"] {
+    width: 100%;
+  }
+JS: |
+  const { container, config } = ctx;
+  const h = Number(config.size || config.height || 24);
+  container.style.height = h + 'px';

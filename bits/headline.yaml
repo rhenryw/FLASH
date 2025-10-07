@@ -1,0 +1,16 @@
+Name: headline
+CSS: |
+  [data-bit="headline"] h2 {
+    margin: 0;
+    line-height: 1.2;
+  }
+JS: |
+  const { container, config, utils } = ctx;
+  if (typeof config.id === 'string') container.id = config.id;
+  const h = document.createElement('h2');
+  h.textContent = config.text || '';
+  h.style.fontSize = (config.size || 28) + 'px';
+  h.style.fontWeight = String(config.weight || 700);
+  h.style.color = utils.normalizeColor(config.color || '#E5E7EB');
+  h.style.textAlign = (config.align && config.align.horizontal) || 'left';
+  container.appendChild(h);

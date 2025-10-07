@@ -1,0 +1,24 @@
+Name: paragraph
+CSS: |
+  [data-bit="paragraph"] p {
+    margin: 0;
+  }
+  @media (min-width: 768px) {
+    [data-bit="paragraph"] p {
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+JS: |
+  const { container, config, utils } = ctx;
+  if (typeof config.id === 'string') container.id = config.id;
+  const p = document.createElement('p');
+  p.textContent = config.text || '';
+  p.style.color = utils.normalizeColor(config.color || '#CBD5E1');
+  p.style.textAlign = (config.align && config.align.horizontal) || 'left';
+  p.style.fontSize = (config.size || 16) + 'px';
+  p.style.lineHeight = (config.lineHeight || 1.7);
+  p.style.marginTop = (config.mt || 12) + 'px';
+  p.style.marginBottom = (config.mb || 12) + 'px';
+  container.appendChild(p);

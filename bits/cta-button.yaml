@@ -1,0 +1,21 @@
+Name: cta-button
+CSS: |
+  [data-bit="cta-button"] a {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: filter .15s ease-in-out;
+  }
+  [data-bit="cta-button"] a:hover {
+    filter: brightness(1.05);
+  }
+JS: |
+  const { container, config, utils } = ctx;
+  const a = document.createElement('a');
+  a.textContent = config.label || 'Get started';
+  a.href = config.href || '#';
+  a.style.color = utils.normalizeColor(config.textColor || '#111111');
+  a.style.background = utils.normalizeColor(config.background || '#7AA2F7');
+  a.style.fontSize = (config.size || 16) + 'px';
+  container.appendChild(a);

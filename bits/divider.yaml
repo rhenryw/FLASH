@@ -1,0 +1,14 @@
+Name: divider
+CSS: |
+  [data-bit="divider"] .line {
+    width: 100%;
+    height: 1px;
+    opacity: 0.15;
+  }
+JS: |
+  const { container, config, utils } = ctx;
+  const line = document.createElement('div');
+  line.className = 'line';
+  line.style.background = utils.normalizeColor(config.color || '#FFFFFF');
+  line.style.margin = (config.margin || 24) + 'px 0';
+  container.appendChild(line);
