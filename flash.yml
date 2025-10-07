@@ -11,7 +11,7 @@ sections:
 
 section:
   text:
-    content: "Hi"
+    content: "This is FLASH"
     color: "#FFFFF"
     style:
       bold: true
