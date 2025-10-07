@@ -1,0 +1,11 @@
+Name: sample-bit
+CSS: |
+  [data-bit="sample-bit"] {
+    display: block;
+  }
+JS: |
+  const { container, config, metadata, utils } = ctx;
+  const el = document.createElement('div');
+  el.textContent = config.text || 'Hello from sample-bit';
+  el.style.color = utils.normalizeColor(config.color || '#333333');
+  container.appendChild(el);
