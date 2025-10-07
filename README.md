@@ -28,7 +28,7 @@ Paste these tags into your HTML `<head>`:
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/rhenryw/cdns@main/src/index.min.js"></script>
-<script cdn="rhenryw/flash/dist/builtscript.js lg=0 ref=main"></script>
+<script cdn="rhenryw/flash/dist/index.js lg=0 ref=main"></script>
 ```
 
 Then create `flash.yaml` in the same directory:
@@ -53,7 +53,7 @@ sections:
 
 - `flash.yaml`: Page configuration (background, metadata, sections)
 - `bits/`: Reusable BIT definitions in YAML
-- `scripts/build.js`: Builds the browser runtime to `dist/builtscript.js`
+- `scripts/build.js`: Builds the browser runtime to `dist/index.js`
 - `index.html`: Minimal host page that runs FLASH
 
 ## Define a page with YAML

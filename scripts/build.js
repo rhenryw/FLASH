@@ -6,7 +6,7 @@ const terser = require('terser');
 
 const projectRoot = path.resolve(__dirname, '..');
 const root = projectRoot;
-const outputFile = path.join(projectRoot, 'dist/builtscript.js');
+const outputFile = path.join(projectRoot, 'dist/index.js');
 
 function ensureDir(dir) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -87,8 +87,10 @@ async function buildStaticRuntime() {
   const out = lib + '\n' + runtime;
   const min = await terser.minify(out, { compress: true, mangle: true });
   const finalCode = (min && min.code) ? min.code : out;
+  const year = new Date().getFullYear();
+  const banner = `/* © ${year} RHW, FLASH and everything all rights reserved */\n`;
   ensureDir(path.dirname(outputFile));
-  fs.writeFileSync(outputFile, finalCode);
+  fs.writeFileSync(outputFile, banner + finalCode);
 }
 
 function rewriteIndexToUseBuiltScript() {
@@ -96,7 +98,11 @@ function rewriteIndexToUseBuiltScript() {
   if (!fs.existsSync(rootIndex)) return;
   let html = fs.readFileSync(rootIndex, 'utf8');
   if (html.includes('scripts/script.js')) {
-    html = html.replace('scripts/script.js', 'builtscript.js');
+    html = html.replace('scripts/script.js', 'index.js');
+    fs.writeFileSync(rootIndex, html);
+  }
+  if (html.includes('builtscript.js')) {
+    html = html.replace('builtscript.js', 'index.js');
     fs.writeFileSync(rootIndex, html);
   }
 }
