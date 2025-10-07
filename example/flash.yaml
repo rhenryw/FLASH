@@ -6,6 +6,11 @@ metadata:
   description: "A tiny site composed from reusable FLASH BITs"
 
 sections:
+  - type: sans-serif
+    config:
+      cssUrl: "https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/variable.css"
+      family: "InterVariable, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif"
+
   - type: nav-menu
     config:
       sticky: true
@@ -30,18 +35,38 @@ sections:
       background:
         color: "#111827"
       textColor: "#E5E7EB"
-      height: 200
+      height: 220
 
   - text:
       content: "FLASH lets you describe pages in YAML and extend with BITs."
       color: "#E5E7EB"
       style:
-        bold: false
         align:
           horizontal: center
 
   - text:
-      content: "BITs are reusable pieces that anyone can author and share."
+      content: "Why FLASH: Declarative, fast, and hackable. YAML is the UI; BITs are the building blocks."
+      color: "#CBD5E1"
+      style:
+        align:
+          horizontal: center
+
+  - text:
+      content: "What are BITs: Reusable units defined in this repo. They can inject CSS and run JS to render anything from banners to widgets."
+      color: "#A3A3A3"
+      style:
+        align:
+          horizontal: center
+
+  - text:
+      content: "Customization: Each BIT accepts options in your YAML—colors, text, sizing, alignment, behaviors, and more."
+      color: "#9CA3AF"
+      style:
+        align:
+          horizontal: center
+
+  - text:
+      content: "Try it: Add a new section with type: blue-circle or nav-menu, tweak the values, and refresh."
       color: "#9CA3AF"
       style:
         align:
@@ -52,4 +77,4 @@ sections:
       size: 160
       color: "#2563EB"
       glow: 1.4
-      opacity: 0.7
+      opacity: 0.65

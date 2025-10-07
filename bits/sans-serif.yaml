@@ -1,0 +1,25 @@
+Name: sans-serif
+CSS: |
+  :root {
+    --flash-font-sans: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  }
+  body {
+    font-family: var(--flash-font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+JS: |
+  const { config } = ctx;
+  const href = config && config.cssUrl;
+  if (href && typeof href === 'string') {
+    const exists = Array.from(document.styleSheets).some(s => s.href === href);
+    if (!exists) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      document.head.appendChild(link);
+    }
+  }
+  if (config && typeof config.family === 'string') {
+    document.documentElement.style.setProperty('--flash-font-sans', config.family);
+  }
