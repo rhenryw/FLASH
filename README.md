@@ -1,6 +1,18 @@
 # FLASH
 Fast Lightweight Automatic Site Handler - Build Sites like never before
 
+- [FLASH](#flash)
+   * [Quick start](#quick-start)
+   * [To use](#to-use)
+   * [Project layout](#project-layout)
+   * [Define a page with YAML](#define-a-page-with-yaml)
+   * [Using BITs](#using-bits)
+   * [Create your own BIT](#create-your-own-bit)
+   * [Add custom behavior to a BIT](#add-custom-behavior-to-a-bit)
+   * [Custom HTML/CSS/JS at the site level](#custom-htmlcssjs-at-the-site-level)
+   * [Using custom BIT sources](#using-custom-bit-sources)
+   * [Build script](#build-script)
+  
 ## Quick start
 
 ```bash
