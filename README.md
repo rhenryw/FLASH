@@ -12,6 +12,7 @@ Fast Lightweight Automatic Site Handler - Build Sites like never before
    * [Custom HTML/CSS/JS at the site level](#custom-htmlcssjs-at-the-site-level)
    * [Using custom BIT sources](#using-custom-bit-sources)
    * [Build script](#build-script)
+- [More BITs info](https://github.com/rhenryw/FLASH/tree/main/bits)
   
 ## Quick start
 
