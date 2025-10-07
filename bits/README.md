@@ -111,3 +111,103 @@ JS: |
   }
   container.appendChild(el);
 ```
+
+## Extending BITs with config
+
+Your BIT receives `ctx.config`. Prefer small, composable options and sensible defaults.
+
+Example patterns:
+
+```yaml
+sections:
+  - type: pretty-text
+    config:
+      text: "Hello"
+      color: "#FF00AA"
+      size: 32
+      center: true
+      onClick: "alert"
+      message: "Welcome"
+```
+
+Corresponding JS inside the BIT:
+
+```js
+const { container, config, utils } = ctx;
+const el = document.createElement('div');
+if (config.center) {
+  el.style.display = 'flex';
+  el.style.minHeight = '60vh';
+  el.style.alignItems = 'center';
+  el.style.justifyContent = 'center';
+}
+el.textContent = config.text || 'Pretty';
+el.style.color = utils.normalizeColor(config.color || '#FF00AA');
+el.style.fontSize = (config.size || 28) + 'px';
+if (config.onClick === 'alert') {
+  el.addEventListener('click', () => alert(config.message || 'Hi'));
+}
+container.appendChild(el);
+```
+
+## Configuration conventions
+
+- Plain properties for values: `text`, `color`, `size`
+- Boolean flags for behavior: `center`, `sticky`, `glow`
+- Nested objects for grouped styles: `background`, `style`, `align`
+- Optional `id` for anchors: `config.id` becomes the container `id`
+
+```yaml
+sections:
+  - type: site-header
+    config:
+      id: home
+      title: "Build fast"
+      background:
+        color: "#111827"
+      textColor: "#E5E7EB"
+```
+
+## Site-level custom CSS/JS
+
+You can offer escape hatches at the page level via `flash.yaml` `custom` block. FLASH will inject these globally:
+
+```yaml
+custom:
+  css: |
+    :root { --accent: #7AA2F7; }
+    [data-bit="cta-button"] button { border-radius: 9999px; }
+  js: |
+    console.log('Custom site script loaded');
+```
+
+## Rendering raw HTML
+
+Implement a `raw-html` BIT to safely place custom HTML in sections:
+
+```yaml
+Name: raw-html
+CSS: |
+  [data-bit="raw-html"] { display: block; }
+JS: |
+  const { container, config } = ctx;
+  const wrapper = document.createElement('div');
+  if (typeof config.html === 'string') wrapper.innerHTML = config.html;
+  container.appendChild(wrapper);
+```
+
+Usage:
+
+```yaml
+sections:
+  - type: raw-html
+    config:
+      html: "<h2>Custom Block</h2><p>Inline HTML</p>"
+```
+
+## Debugging tips
+
+- Verify your BIT name matches the YAML file and `Name` key
+- Scope CSS to `[data-bit="<name>"]` to avoid bleeding styles
+- Log `ctx` in your BIT JS to inspect `config` and `metadata`
+- If CSS doesn’t apply, ensure the style tag is injected once and selectors match

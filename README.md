@@ -1,6 +1,159 @@
 # FLASH
 Fast Lightweight Automatic Site Handler - Build Sites like never before
 
-Add docs later
+## Quick start
 
-The example site uses [CDNS](https://github.com/rhenryw/cdns/) for serving
+```bash
+npm install
+npm run build
+```
+
+Open `index.html` via a static server. The page loads `dist/builtscript.js` from the CDN tag in `index.html`, which reads your `flash.yaml` at runtime and renders sections/BITs.
+
+## Project layout
+
+- `flash.yaml`: Page configuration (background, metadata, sections)
+- `bits/`: Reusable BIT definitions in YAML
+- `scripts/build.js`: Builds the browser runtime to `dist/builtscript.js`
+- `index.html`: Minimal host page that runs FLASH
+
+## Define a page with YAML
+
+```yaml
+background:
+  color: "#0B0B0F"
+metadata:
+  title: "My FLASH Site"
+sections:
+  - type: headline
+    config:
+      text: "Hello"
+      size: 32
+  - type: paragraph
+    config:
+      text: "Built with FLASH"
+      color: "#9CA3AF"
+```
+
+## Using BITs
+
+A BIT is a small, reusable component defined in `bits/<name>.yaml`. Reference BITs in `flash.yaml` via `sections` entries:
+
+```yaml
+sections:
+  - type: site-header
+    config:
+      title: "Build sites at light speed"
+  - type: blue-circle
+    config:
+      size: 220
+      color: "#2563EB"
+```
+
+## Create your own BIT
+
+Create `bits/my-widget.yaml`:
+
+```yaml
+Name: my-widget
+CSS: |
+  [data-bit="my-widget"] {
+    display: block;
+  }
+JS: |
+  const { container, config, utils } = ctx;
+  const el = document.createElement('div');
+  el.textContent = config.text || 'Hello from my-widget';
+  el.style.color = utils.normalizeColor(config.color || '#333333');
+  container.appendChild(el);
+```
+
+Use it in `flash.yaml`:
+
+```yaml
+sections:
+  - type: my-widget
+    config:
+      text: "Custom text"
+      color: "#00AAFF"
+```
+
+## Add custom behavior to a BIT
+
+All keys under `config` are passed to your BIT’s JS as `ctx.config`. Extend your BIT by reading those values and applying them.
+
+Example additions inside your BIT’s JS:
+
+```js
+const { container, config } = ctx;
+const box = document.createElement('div');
+box.textContent = config.label || 'Click me';
+if (config.center) {
+  box.style.display = 'flex';
+  box.style.minHeight = '50vh';
+  box.style.alignItems = 'center';
+  box.style.justifyContent = 'center';
+}
+if (config.onClick === 'alert') {
+  box.addEventListener('click', () => alert(config.message || 'Hi'));
+}
+container.appendChild(box);
+```
+
+Then in `flash.yaml`:
+
+```yaml
+sections:
+  - type: my-widget
+    config:
+      label: "Press"
+      center: true
+      onClick: "alert"
+      message: "Welcome!"
+```
+
+## Custom HTML/CSS/JS at the site level
+
+You can inject custom CSS/JS for the whole site via a `custom` block in `flash.yaml`:
+
+```yaml
+custom:
+  css: |
+    html, body { scroll-behavior: smooth; }
+    .caps { text-transform: uppercase; }
+  js: |
+    console.log('FLASH site loaded');
+```
+
+To place raw HTML, render it from a BIT. Create a small `raw-html` BIT:
+
+```yaml
+Name: raw-html
+CSS: |
+  [data-bit="raw-html"] { display: block; }
+JS: |
+  const { container, config } = ctx;
+  const wrapper = document.createElement('div');
+  if (typeof config.html === 'string') wrapper.innerHTML = config.html;
+  container.appendChild(wrapper);
+```
+
+Use it:
+
+```yaml
+sections:
+  - type: raw-html
+    config:
+      html: "<h2 class=\"caps\">Custom Block</h2><p>Inline HTML rendered by a BIT.</p>"
+```
+
+## Build script
+
+- `npm run build` generates `dist/builtscript.js`
+- `index.html` references it via a CDN tag already; local builds are useful if you host your own bundle
+
+## Notes
+
+- Colors are normalized (e.g., short hex and common names like `white`)
+- BIT CSS is injected once per page; scope to `[data-bit="<name>"]`
+- Each BIT receives `{ container, config, metadata, utils }` as `ctx`
