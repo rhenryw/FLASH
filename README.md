@@ -1,5 +1,9 @@
 # FLASH
 Fast Lightweight Automatic Site Handler - Build Sites like never before
+![stars](https://img.shields.io/github/stars/rhenryw/FLASH?style=social)
+![forks](https://img.shields.io/github/forks/rhenryw/FLASH?style=social)
+![cdn](https://img.shields.io/badge/CDN-jsdelivr-blue)
+[![badge](https://data.jsdelivr.com/v1/package/gh/rhenryw/FLASH/badge)](https://www.jsdelivr.com/package/gh/rhenryw/FLASH)
 
 - [FLASH](#flash)
    * [Quick start](#quick-start)
