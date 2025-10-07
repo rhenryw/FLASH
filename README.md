@@ -36,7 +36,7 @@ Paste these tags into your HTML `<head>`:
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/rhenryw/cdns@main/src/index.min.js"></script>
-<script cdn="rhenryw/flash/dist/index.js lg=0 ref=main"></script>
+<script cdn="rhenryw/flash/dist/index.js lg=0 ref=main" defer></script>
 ```
 Put this into your HTML `<body>`
 ```html
