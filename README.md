@@ -10,6 +10,33 @@ npm run build
 
 Open `index.html` via a static server. The page loads `dist/builtscript.js` from the CDN tag in `index.html`, which reads your `flash.yaml` at runtime and renders sections/BITs.
 
+## To use
+
+Paste these tags into your HTML `<head>`:
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/rhenryw/cdns@main/src/index.min.js"></script>
+<script cdn="rhenryw/flash/dist/builtscript.js lg=0 ref=main"></script>
+```
+
+Then create `flash.yaml` in the same directory:
+
+```yaml
+background:
+  color: "#0B0B0F"
+metadata:
+  title: "FLASH Site"
+sections:
+  - type: headline
+    config:
+      text: "Hello FLASH"
+      size: 32
+  - type: paragraph
+    config:
+      text: "This page is powered by FLASH"
+      color: "#9CA3AF"
+```
+
 ## Project layout
 
 - `flash.yaml`: Page configuration (background, metadata, sections)
