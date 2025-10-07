@@ -1,0 +1,55 @@
+background:
+  color: "#0B0B0F"
+
+metadata:
+  title: "FLASH + BITs Example"
+  description: "A tiny site composed from reusable FLASH BITs"
+
+sections:
+  - type: nav-menu
+    config:
+      sticky: true
+      background: "#0F1117"
+      color: "#E6E6E6"
+      accent: "#7AA2F7"
+      brand: "FLASH"
+      items:
+        - label: "Home"
+          href: "#home"
+        - label: "Why FLASH"
+          href: "#why"
+        - label: "BITs"
+          href: "#bits"
+        - label: "Get Started"
+          href: "#start"
+
+  - type: site-header
+    config:
+      title: "Build sites at light speed"
+      subtitle: "Compose with YAML and plug-in BITs"
+      background:
+        color: "#111827"
+      textColor: "#E5E7EB"
+      height: 200
+
+  - text:
+      content: "FLASH lets you describe pages in YAML and extend with BITs."
+      color: "#E5E7EB"
+      style:
+        bold: false
+        align:
+          horizontal: center
+
+  - text:
+      content: "BITs are reusable pieces that anyone can author and share."
+      color: "#9CA3AF"
+      style:
+        align:
+          horizontal: center
+
+  - type: blue-circle
+    config:
+      size: 160
+      color: "#2563EB"
+      glow: 1.4
+      opacity: 0.7

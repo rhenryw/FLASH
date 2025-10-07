@@ -1,0 +1,68 @@
+Name: nav-menu
+CSS: |
+  [data-bit="nav-menu"] {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  [data-bit="nav-menu"].sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  [data-bit="nav-menu"] .wrap {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+  }
+  [data-bit="nav-menu"] .brand {
+    font-weight: 700;
+  }
+  [data-bit="nav-menu"] .items {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  [data-bit="nav-menu"] .items a {
+    text-decoration: none;
+  }
+  @media (max-width: 640px) {
+    [data-bit="nav-menu"] .wrap {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    [data-bit="nav-menu"] .items {
+      justify-content: center;
+    }
+  }
+JS: |
+  const { container, config, utils } = ctx;
+  const bg = utils.normalizeColor(config.background || 'transparent');
+  const color = utils.normalizeColor(config.color || '#111111');
+  const accent = utils.normalizeColor(config.accent || '#0A84FF');
+  const sticky = !!config.sticky;
+  const brandText = config.brand || 'FLASH';
+  const items = Array.isArray(config.items) ? config.items : [];
+  if (sticky) container.classList.add('sticky');
+  const wrap = document.createElement('div');
+  wrap.className = 'wrap';
+  wrap.style.background = bg;
+  wrap.style.color = color;
+  const brand = document.createElement('div');
+  brand.className = 'brand';
+  brand.textContent = brandText;
+  const list = document.createElement('nav');
+  list.className = 'items';
+  for (const it of items) {
+    const a = document.createElement('a');
+    a.textContent = (it && it.label) || '';
+    a.href = (it && it.href) || '#';
+    a.style.color = color;
+    a.onmouseenter = () => a.style.color = accent;
+    a.onmouseleave = () => a.style.color = color;
+    list.appendChild(a);
+  }
+  wrap.appendChild(brand);
+  wrap.appendChild(list);
+  container.appendChild(wrap);

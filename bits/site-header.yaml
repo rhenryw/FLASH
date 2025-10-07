@@ -1,0 +1,39 @@
+Name: site-header
+CSS: |
+  [data-bit="site-header"] {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+  [data-bit="site-header"] .title {
+    font-weight: 700;
+    margin: 0;
+  }
+  [data-bit="site-header"] .subtitle {
+    opacity: 0.8;
+    margin: 8px 0 0 0;
+  }
+JS: |
+  const { container, config, utils } = ctx;
+  const bg = config.background || {};
+  const h = config.height != null ? Number(config.height) : 96;
+  container.style.minHeight = h + 'px';
+  container.style.background = bg.color ? utils.normalizeColor(bg.color) : (bg.gradient || 'transparent');
+  container.style.color = utils.normalizeColor(config.textColor || '#FFFFFF');
+  container.style.textAlign = (config.align && config.align.horizontal) || 'center';
+  const wrap = document.createElement('div');
+  const title = document.createElement('h1');
+  title.className = 'title';
+  title.textContent = config.title || 'FLASH';
+  title.style.fontSize = (config.titleSize || 36) + 'px';
+  const subtitle = document.createElement('p');
+  subtitle.className = 'subtitle';
+  subtitle.textContent = config.subtitle || '';
+  subtitle.style.fontSize = (config.subtitleSize || 16) + 'px';
+  wrap.appendChild(title);
+  if (subtitle.textContent) wrap.appendChild(subtitle);
+  container.appendChild(wrap);
