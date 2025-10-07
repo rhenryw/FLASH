@@ -78,10 +78,35 @@ metadata:
 ```
 
 ## How loading works
-At runtime FLASH tries to load your BIT definition from this repository:
+At runtime FLASH can load your BIT definition from multiple sources.
 
-- First tries `bits/<name>.yaml` then `bits/<name>.yml`
-- Injects `CSS` once and executes `JS` with the context above
+Order for a BIT named `<name>`:
+
+- For each source base in `bits.sources`, try `BASE/<name>.yaml` then `BASE/<name>.yml`.
+- If `bits.sources` is not specified, FLASH tries `./bits/` first, then the public repo.
+
+Configure sources in `flash.yaml`:
+
+```yaml
+bits:
+  sources:
+    - ./bits/
+    - github:
+        repo: you/your-bits
+        ref: main
+        path: bits
+    - url: https://mysite.com/bits/
+```
+
+You can also use a plain string base URL:
+
+```yaml
+bits:
+  sources:
+    - https://cdn.example.com/my-bits/
+```
+
+FLASH injects `CSS` once and executes `JS` with the provided context.
 
 ## Contributing a BIT
 - Fork the repo

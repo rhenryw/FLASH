@@ -174,13 +174,46 @@ sections:
       html: "<h2 class=\"caps\">Custom Block</h2><p>Inline HTML rendered by a BIT.</p>"
 ```
 
+## Using custom BIT sources
+
+You can point FLASH to multiple BIT sources via `bits.sources` in `flash.yaml`. FLASH will try each source in order for both `.yaml` and `.yml`.
+
+Example options:
+
+```yaml
+bits:
+  sources:
+    # Local directory (relative or absolute)
+    - ./bits/
+    - /bits/
+
+    # GitHub repo (raw content)
+    - github:
+        repo: myorg/mybits
+        ref: main        # optional, defaults to main
+        path: bits       # optional, defaults to bits
+
+    # Direct base URL
+    - url: https://mysite.com/bits/
+
+    # Another arbitrary base
+    - https://cdn.example.com/custom-bits/
+```
+
+Resolution order for a BIT named `custom-thing`:
+
+- Tries `BASE/custom-thing.yaml`, then `BASE/custom-thing.yml` for each BASE in `bits.sources`.
+- If no `bits.sources` is provided, defaults to `./bits/` then the public repo bits.
+
+Use it in `flash.yaml` like any other BIT:
+
+```yaml
+sections:
+  - type: custom-thing
+    config:
+      text: "Hello from custom source"
+```
+
 ## Build script
 
-- `npm run build` generates `dist/builtscript.js`
-- `index.html` references it via a CDN tag already; local builds are useful if you host your own bundle
-
-## Notes
-
-- Colors are normalized (e.g., short hex and common names like `white`)
-- BIT CSS is injected once per page; scope to `[data-bit="<name>"]`
-- Each BIT receives `{ container, config, metadata, utils }` as `ctx`
+- `npm run build`
