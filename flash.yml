@@ -1,0 +1,12 @@
+background:
+  color: "#000"
+
+section:
+    text:
+        content: "Hi"
+        color: "#FFFFF"
+        style:
+            bold: true
+            align:
+            horizontal: center
+            vertical: middle
