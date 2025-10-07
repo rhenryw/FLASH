@@ -226,27 +226,31 @@
       executeBitJs(name, jsCode, ctx);
     }).catch(() => {});
   }
-  function renderSections(cfg) {
+  function renderSections(root, cfg) {
     const sections = Array.isArray(cfg.sections) ? cfg.sections : [];
     const jobs = [];
     sections.forEach(s => {
       if (s.type === 'text') {
         const holder = document.createElement('div');
         if (s.id) holder.id = s.id;
-        document.body.appendChild(holder);
+        root.appendChild(holder);
         renderTextInto(holder, s);
       } else if (s.type === 'bit' && s.name) {
         const container = document.createElement('div');
         container.setAttribute('data-bit', s.name);
         if (s.config && typeof s.config.id === 'string') container.id = s.config.id;
-        document.body.appendChild(container);
+        root.appendChild(container);
         jobs.push(renderBitSection(cfg.metadata || {}, s, container));
       }
     });
     return Promise.all(jobs);
   }
   function init() {
-    fetchText(['./flash.yml', './flash.yaml']).then(src => {
+    const flashEl = document.querySelector('flash[src]');
+    if (!flashEl) return;
+    const root = flashEl;
+    const srcAttr = flashEl.getAttribute('src') || '';
+    fetchText([srcAttr]).then(src => {
       let parsed = {};
       try {
         parsed = (window.jsyaml || window.JSYAML || window.yaml || window.YAML).load(src) || {};
@@ -259,7 +263,7 @@
       applyMetadata(cfg.metadata);
       applyCustom(cfg);
       try { document.documentElement.style.scrollBehavior = 'smooth'; } catch (e) {}
-      return renderSections(cfg);
+      return renderSections(root, cfg);
     }).catch(() => {});
   }
   if (document.readyState === 'loading') {

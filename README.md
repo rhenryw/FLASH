@@ -38,6 +38,12 @@ Paste these tags into your HTML `<head>`:
 <script src="https://cdn.jsdelivr.net/gh/rhenryw/cdns@main/src/index.min.js"></script>
 <script cdn="rhenryw/flash/dist/index.js lg=0 ref=main"></script>
 ```
+Put this into your HTML `<body>`
+```html
+<flash>
+```
+> [!NOTE]
+> You can add an `src` attribute with a path or link to your YAML file if it's not named `FLASH.yaml` at the root of your site
 
 Then create `flash.yaml` in the same directory:
 
