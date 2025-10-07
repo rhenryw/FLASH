@@ -1,5 +1,8 @@
 # FLASH
 Fast Lightweight Automatic Site Handler - Build Sites like never before
+
+<td><a target="_blank" href="https://discord.gg/XygZfmMM86"><img src="https://dcbadge.limes.pink/api/server/XygZfmMM86" alt="Join Discord!" /></a></td>
+
 ![stars](https://img.shields.io/github/stars/rhenryw/FLASH?style=social)
 ![forks](https://img.shields.io/github/forks/rhenryw/FLASH?style=social)
 ![cdn](https://img.shields.io/badge/CDN-jsdelivr-blue)
