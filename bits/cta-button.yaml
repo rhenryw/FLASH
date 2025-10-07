@@ -1,5 +1,9 @@
 Name: cta-button
 CSS: |
+  [data-bit="cta-button"] .wrap {
+    display: flex;
+    width: 100%;
+  }
   [data-bit="cta-button"] a {
     display: inline-block;
     text-decoration: none;
@@ -12,10 +16,16 @@ CSS: |
   }
 JS: |
   const { container, config, utils } = ctx;
+  const wrap = document.createElement('div');
+  wrap.className = 'wrap';
+  wrap.style.justifyContent = (config.align === 'center') ? 'center' : (config.align === 'right' ? 'flex-end' : 'flex-start');
   const a = document.createElement('a');
   a.textContent = config.label || 'Get started';
   a.href = config.href || '#';
   a.style.color = utils.normalizeColor(config.textColor || '#111111');
   a.style.background = utils.normalizeColor(config.background || '#7AA2F7');
   a.style.fontSize = (config.size || 16) + 'px';
-  container.appendChild(a);
+  a.style.marginTop = (config.mt || 8) + 'px';
+  a.style.marginBottom = (config.mb || 8) + 'px';
+  wrap.appendChild(a);
+  container.appendChild(wrap);

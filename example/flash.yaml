@@ -89,6 +89,9 @@ sections:
       background: "#7AA2F7"
       textColor: "#0B0B0F"
       size: 16
+      align: center
+      mt: 6
+      mb: 6
 
   - type: spacer
     config:
@@ -96,10 +99,10 @@ sections:
 
   - type: blue-circle
     config:
-      size: 180
+      size: 220
       color: "#2563EB"
-      glow: 1.0
-      opacity: 0.5
+      glow: 0.4
+      opacity: 0.10
 
   - type: headline
     config:
@@ -107,6 +110,7 @@ sections:
       size: 28
       color: "#E5E7EB"
       id: start
+      scrollMargin: 64
 
   - type: paragraph
     config:

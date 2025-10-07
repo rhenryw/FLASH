@@ -7,7 +7,7 @@ CSS: |
     align-items: center;
     justify-content: center;
     pointer-events: none;
-    z-index: 0;
+    z-index: -1;
   }
   [data-bit="blue-circle"] .bcircle {
     border-radius: 50%;
@@ -15,31 +15,31 @@ CSS: |
     will-change: transform, opacity, box-shadow;
   }
   @keyframes blue-circle-pulse {
-    0% { transform: scale(0.9); opacity: 0.85; }
-    50% { transform: scale(1.08); opacity: 1; }
-    100% { transform: scale(0.9); opacity: 0.85; }
+    0% { transform: scale(0.95); opacity: 0.85; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.85; }
   }
 JS: |
   const { container, config, utils } = ctx;
   const size = Number(config.size || 140);
   const color = utils.normalizeColor(config.color || '#007AFF');
-  const glow = Number(config.glow || 1);
+  const glow = Number(config.glow || 0.5);
   container.style.position = 'fixed';
   container.style.inset = '0';
   container.style.display = 'flex';
   container.style.alignItems = 'center';
   container.style.justifyContent = 'center';
   container.style.pointerEvents = 'none';
-  container.style.zIndex = '0';
+  container.style.zIndex = '-1';
   const circle = document.createElement('div');
   circle.className = 'bcircle';
   circle.style.width = size + 'px';
   circle.style.height = size + 'px';
   circle.style.backgroundColor = color;
   circle.style.color = color;
-  const g1 = Math.round(24 * glow);
+  const g1 = Math.round(20 * glow);
   const g2 = Math.round(64 * glow);
   const g3 = Math.round(96 * glow);
   circle.style.boxShadow = '0 0 ' + g1 + 'px ' + color + ', 0 0 ' + g2 + 'px ' + color + ', 0 0 ' + g3 + 'px ' + color;
-  if (typeof config.opacity === 'number') circle.style.opacity = String(config.opacity);
+  circle.style.opacity = String(typeof config.opacity === 'number' ? config.opacity : 0.12);
   container.appendChild(circle);

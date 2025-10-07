@@ -7,6 +7,7 @@ CSS: |
 JS: |
   const { container, config, utils } = ctx;
   if (typeof config.id === 'string') container.id = config.id;
+  if (config.scrollMargin != null) container.style.scrollMarginTop = String(config.scrollMargin) + 'px';
   const h = document.createElement('h2');
   h.textContent = config.text || '';
   h.style.fontSize = (config.size || 28) + 'px';
