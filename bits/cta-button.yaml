@@ -16,6 +16,12 @@ CSS: |
   }
 JS: |
   const { container, config, utils } = ctx;
+
+  // Apply style config if provided
+  if (config.style && typeof config.style === 'object') {
+    Object.assign(container.style, config.style);
+  }
+
   const wrap = document.createElement('div');
   wrap.className = 'wrap';
   wrap.style.justifyContent = (config.align === 'center') ? 'center' : (config.align === 'right' ? 'flex-end' : 'flex-start');

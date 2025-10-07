@@ -2,17 +2,88 @@ Name: footer
 CSS: |
   [data-bit="footer"] {
     width: 100%;
-    padding: 24px 16px;
-    opacity: 0.8;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
   }
   [data-bit="footer"] .inner {
     text-align: center;
-    font-size: 13px;
+    font-size: 16px;
+    color: #94a3b8;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  [data-bit="footer"] .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  [data-bit="footer"] .footer-link {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    display: inline-block;
+  }
+  [data-bit="footer"] .footer-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    transform: translateY(-2px);
+  }
+  [data-bit="footer"] .footer-link.external::after {
+    content: ' ↗';
+    font-size: 12px;
+    opacity: 0.7;
   }
 JS: |
   const { container, config, utils } = ctx;
+
+  // Set container styles
+  container.style.width = '100%';
+  container.style.padding = '3rem 2rem';
+  container.style.background = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+  container.style.borderTop = '1px solid rgba(255, 255, 255, 0.1)';
+  container.style.position = 'relative';
+
   const inner = document.createElement('div');
   inner.className = 'inner';
-  inner.style.color = utils.normalizeColor(config.color || '#9CA3AF');
+  inner.style.textAlign = 'center';
+  inner.style.fontSize = '16px';
+  inner.style.color = utils.normalizeColor(config.color || '#94a3b8');
+  inner.style.maxWidth = '800px';
+  inner.style.margin = '0 auto';
+  inner.style.lineHeight = '1.6';
   inner.textContent = config.text || '';
+
+  // Add footer links if provided
+  if (config.links && Array.isArray(config.links) && config.links.length > 0) {
+    const linksContainer = document.createElement('div');
+    linksContainer.className = 'footer-links';
+
+    config.links.forEach(link => {
+      const linkElement = document.createElement('a');
+      linkElement.className = 'footer-link';
+      linkElement.href = link.href || '#';
+      linkElement.textContent = link.text || link.label || '';
+
+      if (link.external) {
+        linkElement.classList.add('external');
+        linkElement.setAttribute('target', '_blank');
+        linkElement.setAttribute('rel', 'noopener noreferrer');
+      }
+
+      linksContainer.appendChild(linkElement);
+    });
+
+    inner.appendChild(linksContainer);
+  }
+
   container.appendChild(inner);

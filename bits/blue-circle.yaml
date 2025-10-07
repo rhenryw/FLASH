@@ -21,6 +21,12 @@ CSS: |
   }
 JS: |
   const { container, config, utils } = ctx;
+
+  // Apply style config if provided (before setting default styles)
+  if (config.style && typeof config.style === 'object') {
+    Object.assign(container.style, config.style);
+  }
+
   const size = Number(config.size || 140);
   const color = utils.normalizeColor(config.color || '#007AFF');
   const glow = Number(config.glow || 0.5);

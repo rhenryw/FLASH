@@ -13,6 +13,12 @@ CSS: |
 JS: |
   const { container, config, utils } = ctx;
   if (typeof config.id === 'string') container.id = config.id;
+
+  // Apply style config if provided
+  if (config.style && typeof config.style === 'object') {
+    Object.assign(container.style, config.style);
+  }
+
   const p = document.createElement('p');
   p.textContent = config.text || '';
   p.style.color = utils.normalizeColor(config.color || '#CBD5E1');

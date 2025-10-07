@@ -1,0 +1,113 @@
+Name: floating-particles
+CSS: |
+  [data-bit="floating-particles"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+  [data-bit="floating-particles"] .particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: float-particle linear infinite;
+    opacity: 0;
+  }
+  [data-bit="floating-particles"] .particle:nth-child(odd) {
+    animation-duration: 8s;
+    animation-delay: -2s;
+  }
+  [data-bit="floating-particles"] .particle:nth-child(even) {
+    animation-duration: 12s;
+    animation-delay: -4s;
+  }
+  [data-bit="floating-particles"] .particle:nth-child(3n) {
+    animation-duration: 10s;
+    animation-delay: -6s;
+  }
+  @keyframes float-particle {
+    0% {
+      transform: translateY(100vh) translateX(0px) scale(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+      transform: translateY(90vh) translateX(10px) scale(0.5);
+    }
+    50% {
+      opacity: 0.8;
+      transform: translateY(50vh) translateX(-20px) scale(1);
+    }
+    90% {
+      opacity: 1;
+      transform: translateY(10vh) translateX(15px) scale(0.5);
+    }
+    100% {
+      transform: translateY(-10vh) translateX(0px) scale(0);
+      opacity: 0;
+    }
+  }
+JS: |
+  const { container, config, utils } = ctx;
+
+  // Set container styles
+  container.style.position = 'fixed';
+  container.style.top = '0';
+  container.style.left = '0';
+  container.style.width = '100%';
+  container.style.height = '100%';
+  container.style.pointerEvents = 'none';
+  container.style.zIndex = '-1';
+  container.style.overflow = 'hidden';
+
+  // Configuration defaults
+  const particleCount = config.count || 50;
+  const particleColors = config.colors || ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe'];
+  const particleSize = config.size || { min: 2, max: 8 };
+
+  // Create particles
+  for (let i = 0; i < particleCount; i++) {
+    setTimeout(() => {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+
+      // Random size
+      const size = Math.random() * (particleSize.max - particleSize.min) + particleSize.min;
+      particle.style.width = size + 'px';
+      particle.style.height = size + 'px';
+
+      // Random color
+      const color = particleColors[Math.floor(Math.random() * particleColors.length)];
+      particle.style.background = `rgba(${utils.hexToRgb(color).r}, ${utils.hexToRgb(color).g}, ${utils.hexToRgb(color).b}, 0.6)`;
+
+      // Random starting position
+      particle.style.left = Math.random() * 100 + '%';
+
+      // Add to container
+      container.appendChild(particle);
+
+      // Remove particle after animation completes
+      setTimeout(() => {
+        if (particle.parentNode) {
+          particle.parentNode.removeChild(particle);
+        }
+      }, 12000); // 12 seconds matches longest animation duration
+
+    }, Math.random() * 2000); // Stagger particle creation
+  }
+
+  // Add utility function to convert hex to RGB
+  if (!utils.hexToRgb) {
+    utils.hexToRgb = (hex) => {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    };
+  }

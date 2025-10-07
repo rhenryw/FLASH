@@ -1,0 +1,236 @@
+Name: hero-section
+CSS: |
+  [data-bit="hero-section"] {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    background-size: 400% 400%;
+    animation: gradient-shift 8s ease infinite;
+    width: 100%;
+  }
+  [data-bit="hero-section"] .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    max-width: 800px;
+    padding: 2rem;
+  }
+  [data-bit="hero-section"] .hero-title {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ffffff, #f0f0f0, #e0e0e0);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: text-shimmer 3s ease-in-out infinite;
+    line-height: 1.1;
+  }
+  [data-bit="hero-section"] .hero-title-main {
+    display: block;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    background: linear-gradient(45deg, #ffffff, #f0f0f0, #e0e0e0);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: text-shimmer 3s ease-in-out infinite;
+  }
+  [data-bit="hero-section"] .hero-title-sub {
+    display: block;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 0.5rem;
+    opacity: 0.9;
+  }
+  [data-bit="hero-section"] .hero-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+  [data-bit="hero-section"] .hero-cta {
+    display: inline-flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  [data-bit="hero-section"] .btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  [data-bit="hero-section"] .btn-primary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  [data-bit="hero-section"] .btn-primary:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  [data-bit="hero-section"] .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+  }
+  [data-bit="hero-section"] .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+  [data-bit="hero-section"] .floating-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  [data-bit="hero-section"] .shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    animation: float 6s ease-in-out infinite;
+  }
+  [data-bit="hero-section"] .shape:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    top: 20%;
+    left: 10%;
+    animation-delay: -1s;
+  }
+  [data-bit="hero-section"] .shape:nth-child(2) {
+    width: 60px;
+    height: 60px;
+    top: 60%;
+    right: 15%;
+    animation-delay: -2s;
+  }
+  [data-bit="hero-section"] .shape:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 20%;
+    animation-delay: -3s;
+  }
+  [data-bit="hero-section"] .shape:nth-child(4) {
+    width: 40px;
+    height: 40px;
+    top: 30%;
+    right: 30%;
+    animation-delay: -4s;
+  }
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes text-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+JS: |
+  const { container, config, utils } = ctx;
+  container.style.minHeight = '100vh';
+  container.style.display = 'flex';
+  container.style.alignItems = 'center';
+  container.style.justifyContent = 'center';
+  container.style.position = 'relative';
+  container.style.overflow = 'hidden';
+
+  // Set background gradient
+  const bg = `linear-gradient(45deg, ${config.gradient1 || '#667eea'} 0%, ${config.gradient2 || '#764ba2'} 100%)`;
+  container.style.background = bg;
+  container.style.backgroundSize = '400% 400%';
+
+  // Create hero content
+  const heroContent = document.createElement('div');
+  heroContent.className = 'hero-content';
+
+  // Handle title - create styled title with optional tagline
+  const titleText = config.title || 'Build Amazing Sites';
+  const titleContainer = document.createElement('div');
+  titleContainer.className = 'hero-title';
+
+  // Main title
+  const mainTitle = document.createElement('span');
+  mainTitle.className = 'hero-title-main';
+  mainTitle.textContent = titleText;
+  titleContainer.appendChild(mainTitle);
+
+  // Optional tagline/subtitle
+  if (config.tagline) {
+    const subTitle = document.createElement('span');
+    subTitle.className = 'hero-title-sub';
+    subTitle.textContent = config.tagline;
+    titleContainer.appendChild(subTitle);
+  }
+
+  heroContent.appendChild(titleContainer);
+
+  const subtitle = document.createElement('p');
+  subtitle.className = 'hero-subtitle';
+  subtitle.textContent = config.subtitle || 'Create stunning websites with the power of YAML and reusable components';
+  heroContent.appendChild(subtitle);
+
+  const ctaContainer = document.createElement('div');
+  ctaContainer.className = 'hero-cta';
+
+  if (config.primaryButton) {
+    const btnPrimary = document.createElement('a');
+    btnPrimary.className = 'btn btn-primary';
+    btnPrimary.textContent = config.primaryButton.text || 'Get Started';
+    btnPrimary.href = config.primaryButton.href || '#';
+    if (config.primaryButton.onClick) {
+      btnPrimary.addEventListener('click', new Function(config.primaryButton.onClick));
+    }
+    ctaContainer.appendChild(btnPrimary);
+  }
+
+  if (config.secondaryButton) {
+    const btnSecondary = document.createElement('a');
+    btnSecondary.className = 'btn btn-secondary';
+    btnSecondary.textContent = config.secondaryButton.text || 'Learn More';
+    btnSecondary.href = config.secondaryButton.href || '#';
+    if (config.secondaryButton.onClick) {
+      btnSecondary.addEventListener('click', new Function(config.secondaryButton.onClick));
+    }
+    ctaContainer.appendChild(btnSecondary);
+  }
+
+  heroContent.appendChild(ctaContainer);
+
+  // Add floating shapes
+  const shapesContainer = document.createElement('div');
+  shapesContainer.className = 'floating-shapes';
+
+  for (let i = 0; i < 4; i++) {
+    const shape = document.createElement('div');
+    shape.className = 'shape';
+    shapesContainer.appendChild(shape);
+  }
+
+  container.appendChild(shapesContainer);
+  container.appendChild(heroContent);

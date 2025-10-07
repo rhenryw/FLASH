@@ -1,0 +1,332 @@
+Name: features-grid
+CSS: |
+  [data-bit="features-grid"] {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, #1a1d29 0%, #2d3748 100%);
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+  }
+  [data-bit="features-grid"] .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  [data-bit="features-grid"] .section-title {
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  [data-bit="features-grid"] .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border-radius: 2px;
+  }
+  [data-bit="features-grid"] .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  [data-bit="features-grid"] .feature-card {
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+  }
+  [data-bit="features-grid"] .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  [data-bit="features-grid"] .feature-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 24px 48px rgba(102, 126, 234, 0.2);
+    border-color: rgba(102, 126, 234, 0.3);
+  }
+  [data-bit="features-grid"] .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+  [data-bit="features-grid"] .feature-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  [data-bit="features-grid"] .feature-icon::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+  }
+  [data-bit="features-grid"] .feature-card:hover .feature-icon::before {
+    opacity: 1;
+    animation: shine 0.6s ease;
+  }
+  [data-bit="features-grid"] .feature-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 1rem;
+  }
+  [data-bit="features-grid"] .feature-description {
+    color: #a0aec0;
+    line-height: 1.7;
+    font-size: 1rem;
+  }
+  [data-bit="features-grid"] .stats-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 4rem 2rem;
+    margin-top: 4rem;
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  [data-bit="features-grid"] .stats-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  [data-bit="features-grid"] .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  [data-bit="features-grid"] .stat-item {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+  }
+  [data-bit="features-grid"] .stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, #ffffff, #f0f0f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  [data-bit="features-grid"] .stat-label {
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+  @keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+  }
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+JS: |
+  const { container, config, utils } = ctx;
+
+  const section = document.createElement('section');
+  section.style.padding = '4rem 2rem';
+  section.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)';
+  section.style.position = 'relative';
+
+  const containerDiv = document.createElement('div');
+  containerDiv.className = 'container';
+  containerDiv.style.maxWidth = '1200px';
+  containerDiv.style.margin = '0 auto';
+
+  // Section title
+  if (config.title) {
+    const title = document.createElement('h2');
+    title.className = 'section-title';
+    title.textContent = config.title;
+    title.style.textAlign = 'center';
+    title.style.fontSize = 'clamp(2rem, 5vw, 3rem)';
+    title.style.fontWeight = '700';
+    title.style.color = '#2d3748';
+    title.style.marginBottom = '3rem';
+    title.style.position = 'relative';
+
+    const titleAfter = document.createElement('div');
+    titleAfter.style.position = 'absolute';
+    titleAfter.style.bottom = '-10px';
+    titleAfter.style.left = '50%';
+    titleAfter.style.transform = 'translateX(-50%)';
+    titleAfter.style.width = '60px';
+    titleAfter.style.height = '4px';
+    titleAfter.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+    titleAfter.style.borderRadius = '2px';
+    title.appendChild(titleAfter);
+
+    containerDiv.appendChild(title);
+  }
+
+  // Features grid
+  if (config.features && Array.isArray(config.features)) {
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
+    grid.style.gap = '2rem';
+    grid.style.marginTop = '3rem';
+
+    config.features.forEach((feature, index) => {
+      const card = document.createElement('div');
+      card.className = 'feature-card';
+      card.style.background = 'white';
+      card.style.padding = '2rem';
+      card.style.borderRadius = '16px';
+      card.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
+      card.style.transition = 'all 0.3s ease';
+      card.style.position = 'relative';
+      card.style.overflow = 'hidden';
+      card.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+
+      // Add hover effects
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-8px)';
+        card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.12)';
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0)';
+        card.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
+      });
+
+      const icon = document.createElement('div');
+      icon.className = 'feature-icon';
+      icon.style.width = '60px';
+      icon.style.height = '60px';
+      icon.style.marginBottom = '1.5rem';
+      icon.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+      icon.style.borderRadius = '12px';
+      icon.style.display = 'flex';
+      icon.style.alignItems = 'center';
+      icon.style.justifyContent = 'center';
+      icon.style.fontSize = '1.5rem';
+      icon.style.color = 'white';
+      icon.style.position = 'relative';
+      icon.style.overflow = 'hidden';
+      icon.textContent = feature.icon || '✨';
+
+      const title = document.createElement('h3');
+      title.className = 'feature-title';
+      title.textContent = feature.title || 'Feature';
+      title.style.fontSize = '1.5rem';
+      title.style.fontWeight = '600';
+      title.style.color = '#2d3748';
+      title.style.marginBottom = '1rem';
+
+      const description = document.createElement('p');
+      description.className = 'feature-description';
+      description.textContent = feature.description || 'Feature description';
+      description.style.color = '#718096';
+      description.style.lineHeight = '1.6';
+      description.style.fontSize = '1rem';
+
+      card.appendChild(icon);
+      card.appendChild(title);
+      card.appendChild(description);
+      grid.appendChild(card);
+    });
+
+    containerDiv.appendChild(grid);
+  }
+
+  // Stats section
+  if (config.stats && Array.isArray(config.stats)) {
+    const statsSection = document.createElement('div');
+    statsSection.className = 'stats-section';
+    statsSection.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    statsSection.style.padding = '3rem 2rem';
+    statsSection.style.marginTop = '4rem';
+    statsSection.style.borderRadius = '16px';
+    statsSection.style.color = 'white';
+    statsSection.style.textAlign = 'center';
+
+    const statsGrid = document.createElement('div');
+    statsGrid.className = 'stats-grid';
+    statsGrid.style.display = 'grid';
+    statsGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+    statsGrid.style.gap = '2rem';
+    statsGrid.style.maxWidth = '800px';
+    statsGrid.style.margin = '0 auto';
+
+    config.stats.forEach((stat, index) => {
+      const statItem = document.createElement('div');
+      statItem.className = 'stat-item';
+      statItem.style.opacity = '0';
+      statItem.style.transform = 'translateY(20px)';
+      statItem.style.animation = `fadeInUp 0.6s ease ${index * 0.1}s forwards`;
+
+      const number = document.createElement('div');
+      number.className = 'stat-number';
+      number.textContent = stat.number || '0';
+      number.style.fontSize = '2.5rem';
+      number.style.fontWeight = '700';
+      number.style.marginBottom = '0.5rem';
+      number.style.background = 'linear-gradient(45deg, #ffffff, #f0f0f0)';
+      number.style.backgroundClip = 'text';
+      number.style.webkitBackgroundClip = 'text';
+      number.style.webkitTextFillColor = 'transparent';
+
+      const label = document.createElement('div');
+      label.className = 'stat-label';
+      label.textContent = stat.label || 'Stat';
+      label.style.fontSize = '1rem';
+      label.style.opacity = '0.9';
+
+      statItem.appendChild(number);
+      statItem.appendChild(label);
+      statsGrid.appendChild(statItem);
+    });
+
+    statsSection.appendChild(statsGrid);
+    containerDiv.appendChild(statsSection);
+  }
+
+  section.appendChild(containerDiv);
+  container.appendChild(section);

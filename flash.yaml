@@ -2,8 +2,75 @@ background:
   color: "#0B0B0F"
 
 metadata:
-  title: "FLASH + BITs Example"
-  description: "A tiny site composed from reusable FLASH BITs"
+  title: "FLASH - Build Stunning Sites at Light Speed"
+  description: "Create amazing websites with declarative YAML, reusable components, and stunning animations. The future of web development is here."
+  author: "FLASH Team"
+  image: "https://via.placeholder.com/1200x630/667eea/ffffff?text=FLASH+Demo"
+
+custom:
+  css: |
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --accent-color: #7AA2F7;
+      --text-primary: #2d3748;
+      --text-secondary: #718096;
+      --bg-light: #f7fafc;
+    }
+
+    * {
+      scroll-behavior: smooth;
+    }
+
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'InterVariable', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-gradient);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #5a67d8;
+    }
+
+  js: |
+    // Add smooth scrolling and enhanced interactions
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add loading animation
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        document.body.style.transition = 'opacity 0.5s ease';
+        document.body.style.opacity = '1';
+      }, 100);
+
+      // Add parallax effect to hero section
+      window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector('[data-bit="hero-section"] .hero-content');
+        if (hero) {
+          const rate = scrolled * -0.5;
+          hero.style.transform = `translateY(${rate}px)`;
+        }
+      });
+    });
 
 sections:
   - type: sans-serif
@@ -11,122 +78,237 @@ sections:
       cssUrl: "https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/variable.css"
       family: "InterVariable, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif"
 
+  - type: floating-particles
+    config:
+      count: 80
+      colors: ["#667eea", "#764ba2", "#f093fb", "#f5576c", "#4facfe", "#00d2d3"]
+      size: { min: 3, max: 12 }
+
   - type: nav-menu
     config:
       sticky: true
-      background: "#0F1117"
+      background: "rgba(15, 17, 23, 0.95)"
       color: "#E6E6E6"
       accent: "#7AA2F7"
-      brand: "FLASH"
+      brand: "⚡ FLASH"
+      backdrop: true
+      shadow: true
       items:
-        - label: "Home"
+        - label: "🏠 Home"
           href: "#home"
-        - label: "Why"
-          href: "#why"
-        - label: "BITs"
+        - label: "✨ Features"
+          href: "#features"
+        - label: "🚀 Why FLASH"
+          href: "#why-flash"
+          children:
+            - label: "Lightning Fast"
+              href: "#speed"
+            - label: "Fully Customizable"
+              href: "#customizable"
+            - label: "Community Driven"
+              href: "#community"
+        - label: "🛠️ BITs"
           href: "#bits"
-        - label: "Start"
-          href: "#start"
+          children:
+            - label: "Browse BITs"
+              href: "#browse-bits"
+            - label: "Create BITs"
+              href: "#create-bits"
+            - label: "Documentation"
+              href: "#docs"
+        - label: "🎯 Get Started"
+          href: "#get-started"
 
-  - type: site-header
+
+  - type: hero-section
     config:
-      title: "Build sites at light speed"
-      subtitle: "Compose with YAML and plug-in BITs"
-      background:
-        color: "#111827"
-      textColor: "#E5E7EB"
-      height: 240
       id: home
+      gradient1: "#667eea"
+      gradient2: "#764ba2"
+      title: "Build Amazing Sites"
+      subtitle: "Create stunning websites with declarative YAML, reusable components, and breathtaking animations. The future of web development is here."
+      tagline: "at Light Speed"
+      primaryButton:
+        text: "🚀 Start Building"
+        href: "#get-started"
+        onClick: "console.log('Welcome to FLASH!')"
+      secondaryButton:
+        text: "📚 Learn More"
+        href: "#features"
 
-  - type: spacer
+  - type: features-grid
     config:
-      size: 12
+      id: features
+      title: "✨ Why Choose FLASH?"
+      features:
+        - icon: "⚡"
+          title: "Lightning Fast"
+          description: "Build websites in minutes with our declarative YAML syntax and optimized rendering engine."
+        - icon: "🎨"
+          title: "Fully Customizable"
+          description: "Create unique designs with reusable BITs, custom CSS/JS, and complete creative freedom."
+        - icon: "🔧"
+          title: "Developer Friendly"
+          description: "Built for developers who love simplicity, performance, and beautiful code architecture."
+        - icon: "🚀"
+          title: "Production Ready"
+          description: "Deploy anywhere with static generation, CDN optimization, and enterprise-grade reliability."
+        - icon: "🌟"
+          title: "Animation Rich"
+          description: "Bring your sites to life with stunning animations, effects, and interactive experiences."
+        - icon: "📱"
+          title: "Mobile First"
+          description: "Responsive by default with touch-friendly interactions and mobile-optimized performance."
+      stats:
+        - number: "10x"
+          label: "Faster Development"
+        - number: "50+"
+          label: "Built-in BITs"
+        - number: "< 1min"
+          label: "Setup Time"
+        - number: "∞"
+          label: "Customization"
 
   - type: headline
     config:
-      text: "Why FLASH"
-      size: 28
-      color: "#E5E7EB"
-      id: why
-
-  - type: paragraph
-    config:
-      text: "Declarative, fast, and hackable. YAML is the UI; BITs are the building blocks."
-      color: "#CBD5E1"
-      size: 16
-
-  - type: paragraph
-    config:
-      text: "Define your page structure in YAML, then drop in reusable BITs for headers, menus, banners, widgets, and more."
-      color: "#9CA3AF"
-
-  - type: divider
-    config:
-      color: "#FFFFFF"
-      margin: 24
-
-  - type: headline
-    config:
-      text: "What are BITs"
-      size: 28
-      color: "#E5E7EB"
-      id: bits
-
-  - type: paragraph
-    config:
-      text: "BITs are small components defined in this repo. They can inject CSS and run JS to render anything—from a hero to a pulsing background."
-      color: "#CBD5E1"
-
-  - type: paragraph
-    config:
-      text: "Anyone can author a BIT. Add a YAML file to the bits directory and reference it by name in your page."
-      color: "#9CA3AF"
-
-  - type: cta-button
-    config:
-      label: "View BIT Authoring"
-      href: "#start"
-      background: "#7AA2F7"
-      textColor: "#0B0B0F"
-      size: 16
+      id: why-flash
+      text: "🚀 Why FLASH?"
+      size: 42
+      color: "#e2e8f0"
       align: center
-      mt: 6
-      mb: 6
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+        padding: "5rem 2rem"
+        margin: "0"
+        minHeight: "100vh"
+
+  - type: paragraph
+    config:
+      text: "FLASH revolutionizes web development by combining the simplicity of YAML with the power of modern JavaScript and CSS. No more complex frameworks or steep learning curves—just pure, elegant code that gets results."
+      color: "#cbd5e1"
+      size: 19
+      align: center
+      maxWidth: 900
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+        padding: "0 2rem 3rem"
+        margin: "0"
 
   - type: spacer
     config:
       size: 24
-
-  - type: blue-circle
-    config:
-      size: 220
-      color: "#2563EB"
-      glow: 0.4
-      opacity: 0.10
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
 
   - type: headline
     config:
-      text: "Get Started"
-      size: 28
-      color: "#E5E7EB"
-      id: start
-      scrollMargin: 64
+      id: bits
+      text: "🛠️ What are BITs?"
+      size: 42
+      color: "#e2e8f0"
+      align: center
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+        padding: "3rem 2rem 1rem"
+        margin: "0"
 
   - type: paragraph
     config:
-      text: "Fork the repo, add your BIT YAML to bits/, then reference it in your flash.yaml."
-      color: "#CBD5E1"
+      text: "BITs are the building blocks of FLASH sites. These reusable components can render anything from simple text to complex animations, all defined in simple YAML files. Think of them as LEGO blocks for the web."
+      color: "#cbd5e1"
+      size: 19
+      align: center
+      maxWidth: 900
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+        padding: "0 2rem 3rem"
+        margin: "0"
+
+  - type: spacer
+    config:
+      size: 24
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+
+
+  - type: spacer
+    config:
+      size: 24
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+
+  - type: blue-circle
+    config:
+      size: 350
+      color: "#4facfe"
+      glow: 1.0
+      opacity: 0.12
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+        minHeight: "60vh"
+
+  - type: headline
+    config:
+      id: get-started
+      text: "🎯 Ready to Get Started?"
+      size: 42
+      color: "#e2e8f0"
+      align: center
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+        padding: "3rem 2rem 1rem"
+        margin: "0"
 
   - type: paragraph
     config:
-      text: "Open example/index.html in a static server and tweak the YAML to iterate quickly."
-      color: "#9CA3AF"
+      text: "Join thousands of developers building the future of web development. Fork the repo, create your first BIT, and start building amazing sites today!"
+      color: "#cbd5e1"
+      size: 19
+      align: center
+      maxWidth: 900
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+        padding: "0 2rem 2rem"
+        margin: "0"
+
+  - type: spacer
+    config:
+      size: 16
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+
+  - type: cta-button
+    config:
+      label: "🍴 Fork on GitHub"
+      href: "https://github.com/rhenryw/FLASH"
+      background: "#1f2937"
+      textColor: "#e2e8f0"
+      size: 17
+      align: center
+      mt: 8
+      mb: 8
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
+        padding: "2rem"
+        margin: "0"
 
   - type: spacer
     config:
       size: 32
+      style:
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)"
 
   - type: footer
     config:
-      text: "Built with FLASH."
-      color: "#9CA3AF"
+      text: "Built with ⚡ FLASH"
+      color: "#718096"
+      links:
+        - text: "📖 Documentation"
+          href: "#docs"
+        - text: "🐛 Report Issues"
+          href: "#issues"
+        - text: "💬 Community"
+          href: "#community"
+        - text: "⭐ GitHub"
+          href: "https://github.com/rhenryw/FLASH"
+          external: true
