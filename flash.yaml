@@ -10,14 +10,6 @@ custom:
   css: |
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
-    @font-face {
-      font-family: 'PlayfulBoxes';
-      src: url('https://cdn.jsdelivr.net/gh/rhenryw/FLASH@main/fonts/Playful%20Boxes.otf') format('opentype');
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
-    /* Fallback to ensure hero title uses the custom font */
     [data-bit="hero-section"] .hero-title-main { font-family: 'PlayfulBoxes', InterVariable, system-ui, -apple-system, sans-serif; }
   js: |
     document.addEventListener('DOMContentLoaded', function() {
