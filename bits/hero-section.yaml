@@ -7,9 +7,7 @@ CSS: |
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-    background-size: 400% 400%;
-    animation: gradient-shift 8s ease infinite;
+    background: #0010FF; /* primary blue */
     width: 100%;
   }
   [data-bit="hero-section"] .hero-content {
@@ -36,18 +34,13 @@ CSS: |
     display: block;
     font-size: clamp(2.5rem, 8vw, 5rem);
     font-weight: 800;
-    background: linear-gradient(45deg, #ffffff, #f0f0f0, #e0e0e0);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: text-shimmer 3s ease-in-out infinite;
+    color: #FF9900; /* highlight orange */
   }
   [data-bit="hero-section"] .hero-title-sub {
     display: block;
     font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
+    color: #FFDC00; /* particles yellow as accent */
     margin-top: 0.5rem;
     opacity: 0.9;
   }
@@ -138,15 +131,7 @@ CSS: |
     right: 30%;
     animation-delay: -4s;
   }
-  @keyframes gradient-shift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  @keyframes text-shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
+  @keyframes text-shimmer { 0% { opacity: .9 } 100% { opacity: 1 } }
   @keyframes float {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
     50% { transform: translateY(-20px) rotate(180deg); }
@@ -160,10 +145,8 @@ JS: |
   container.style.position = 'relative';
   container.style.overflow = 'hidden';
 
-  // Set background gradient
-  const bg = `linear-gradient(45deg, ${config.gradient1 || '#667eea'} 0%, ${config.gradient2 || '#764ba2'} 100%)`;
-  container.style.background = bg;
-  container.style.backgroundSize = '400% 400%';
+  // Solid background color override per request
+  container.style.background = config.background || '#0010FF';
 
   // Create hero content
   const heroContent = document.createElement('div');
@@ -178,6 +161,9 @@ JS: |
   const mainTitle = document.createElement('span');
   mainTitle.className = 'hero-title-main';
   mainTitle.textContent = titleText;
+  if (config.logoFontFamily) {
+    mainTitle.style.fontFamily = String(config.logoFontFamily);
+  }
   titleContainer.appendChild(mainTitle);
 
   // Optional tagline/subtitle
@@ -222,13 +208,15 @@ JS: |
 
   heroContent.appendChild(ctaContainer);
 
-  // Add floating shapes
+  // Add floating particles with requested color
   const shapesContainer = document.createElement('div');
   shapesContainer.className = 'floating-shapes';
 
-  for (let i = 0; i < 4; i++) {
+  const particleColor = utils.normalizeColor(config.particleColor || '#FFDC00');
+  for (let i = 0; i < 24; i++) {
     const shape = document.createElement('div');
     shape.className = 'shape';
+    shape.style.background = particleColor + '80';
     shapesContainer.appendChild(shape);
   }
 

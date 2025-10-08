@@ -1,0 +1,192 @@
+Name: docs
+CSS: |
+  [data-bit="docs"] {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  [data-bit="docs"] .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  /* GitHub-like Markdown styles (subset) */
+  [data-bit="docs"] .markdown-body {
+    color: #24292f;
+    line-height: 1.6;
+    word-wrap: break-word;
+  }
+  [data-bit="docs"] .markdown-body h1,
+  [data-bit="docs"] .markdown-body h2,
+  [data-bit="docs"] .markdown-body h3,
+  [data-bit="docs"] .markdown-body h4,
+  [data-bit="docs"] .markdown-body h5,
+  [data-bit="docs"] .markdown-body h6 {
+    font-weight: 700;
+    line-height: 1.25;
+    margin-top: 1.5em;
+    margin-bottom: .75em;
+  }
+  [data-bit="docs"] .markdown-body h1 { font-size: 2rem; }
+  [data-bit="docs"] .markdown-body h2 { font-size: 1.6rem; }
+  [data-bit="docs"] .markdown-body h3 { font-size: 1.3rem; }
+  [data-bit="docs"] .markdown-body p { margin: 1em 0; }
+  [data-bit="docs"] .markdown-body a { color: #0969da; text-decoration: none; }
+  [data-bit="docs"] .markdown-body a:hover { text-decoration: underline; }
+  [data-bit="docs"] .markdown-body code, [data-bit="docs"] .markdown-body pre {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: .95em;
+  }
+  [data-bit="docs"] .markdown-body code {
+    background: rgba(175,184,193,.2);
+    padding: .2em .4em;
+    border-radius: 6px;
+  }
+  [data-bit="docs"] .markdown-body pre {
+    background: #0b0f14;
+    color: #e5e7eb;
+    padding: 1rem;
+    overflow: auto;
+    border-radius: 8px;
+  }
+  [data-bit="docs"] .markdown-body blockquote {
+    margin: 0;
+    padding-left: 1em;
+    border-left: 4px solid #d0d7de;
+    color: #57606a;
+  }
+  [data-bit="docs"] .markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  [data-bit="docs"] .markdown-body th,
+  [data-bit="docs"] .markdown-body td {
+    border: 1px solid #d0d7de;
+    padding: .5rem .75rem;
+  }
+  [data-bit="docs"] .markdown-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1rem 0;
+  }
+JS: |
+  const { container, config, utils } = ctx;
+  const url = String(config.url || config.href || '').trim();
+  const bg = config.styles && config.styles.backgroundColor ? config.styles.backgroundColor : '#ffffff';
+  const textColor = config.styles && config.styles.textColor ? config.styles.textColor : '#24292f';
+  const linkColor = config.styles && config.styles.linkColor ? config.styles.linkColor : '#0969da';
+  const headingColor = config.styles && config.styles.headingColor ? config.styles.headingColor : '#1f2328';
+
+  container.style.width = '100%';
+  container.style.boxSizing = 'border-box';
+  container.style.background = bg;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'container';
+
+  const mdRoot = document.createElement('div');
+  mdRoot.className = 'markdown-body';
+  mdRoot.style.color = textColor;
+
+  wrapper.appendChild(mdRoot);
+  container.appendChild(wrapper);
+
+  function setThemeColors() {
+    const style = document.createElement('style');
+    style.textContent = `
+      [data-bit="docs"] .markdown-body a { color: ${linkColor}; }
+      [data-bit="docs"] .markdown-body h1,
+      [data-bit="docs"] .markdown-body h2,
+      [data-bit="docs"] .markdown-body h3,
+      [data-bit="docs"] .markdown-body h4,
+      [data-bit="docs"] .markdown-body h5,
+      [data-bit="docs"] .markdown-body h6 { color: ${headingColor}; }
+    `;
+    container.appendChild(style);
+  }
+  setThemeColors();
+
+  function ensureGitHubMarkdownCSS() {
+    const existing = Array.from(document.styleSheets).some(s => (s.href||'').includes('github-markdown')); 
+    if (existing) return;
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.0/github-markdown.css';
+    document.head.appendChild(l);
+  }
+  ensureGitHubMarkdownCSS();
+
+  function fetchText(u) {
+    return fetch(u).then(r => {
+      if (!r.ok) throw new Error('Failed to fetch markdown');
+      return r.text();
+    });
+  }
+
+  function ensureMarked() {
+    return new Promise((resolve) => {
+      if (window.marked) return resolve(window.marked);
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+      s.onload = () => resolve(window.marked);
+      document.head.appendChild(s);
+    });
+  }
+
+  function ensureHighlight() {
+    return new Promise((resolve) => {
+      if (window.hljs) return resolve(window.hljs);
+      const l = document.createElement('link');
+      l.rel = 'stylesheet';
+      l.href = 'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css';
+      document.head.appendChild(l);
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js';
+      s.onload = () => resolve(window.hljs);
+      document.head.appendChild(s);
+    });
+  }
+
+  async function renderMarkdown() {
+    if (!url) return;
+    const [md, markedLib, hljs] = await Promise.all([
+      fetchText(url),
+      ensureMarked(),
+      ensureHighlight()
+    ]);
+    const baseUrl = url.replace(/\/?[^/]*$/, '/');
+    markedLib.setOptions({
+      breaks: true,
+      baseUrl,
+      highlight: (code, lang) => {
+        try { return hljs.highlight(code, { language: lang }).value; }
+        catch (e) { try { return hljs.highlightAuto(code).value; } catch (_) { return code; } }
+      }
+    });
+    mdRoot.innerHTML = markedLib.parse(md);
+
+    // Rewrite GitHub blob image URLs to raw URLs so they load correctly
+    const imgEls = mdRoot.querySelectorAll('img');
+    imgEls.forEach(img => {
+      try {
+        const src = img.getAttribute('src') || '';
+        const m = src.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.*)$/);
+        if (m) {
+          const raw = `https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]}/${m[4]}`;
+          img.setAttribute('src', raw);
+        }
+      } catch (_) {}
+    });
+
+    mdRoot.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }));
+  }
+
+  renderMarkdown().catch(() => {
+    mdRoot.textContent = 'Failed to load documentation.';
+  });
+
