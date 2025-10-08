@@ -4,6 +4,7 @@ background:
 metadata:
   title: "FLASH - Build Stunning Sites at Light Speed"
   description: "Create amazing websites with declarative YAML, reusable components, and stunning animations. The future of web development is here."
+  favicon: "https://cdn.jsdelivr.net/gh/rhenryw/FLASH@main/img/ico.webp"
 
 custom:
   css: |
