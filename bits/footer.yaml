@@ -3,6 +3,7 @@ CSS: |
   [data-bit="footer"] {
     width: 100%;
     padding: 3rem 2rem;
+    box-sizing: border-box;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
@@ -47,6 +48,7 @@ JS: |
   const { container, config, utils } = ctx;
   container.style.width = '100%';
   container.style.padding = '3rem 2rem';
+  container.style.boxSizing = 'border-box';
   let bg = null;
   if (typeof config.background === 'string') bg = config.background;
   else if (config.background && typeof config.background.color === 'string') bg = config.background.color;
