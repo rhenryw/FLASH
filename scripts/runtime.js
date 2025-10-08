@@ -283,6 +283,8 @@
         parsed = {};
       }
 
+      el.textContent = '';
+
       try { setBitSources(parsed && parsed.bits); } catch (e) { bitSources = []; }
       const cfg = minimalNormalize(parsed);
       applyBackground(cfg);
