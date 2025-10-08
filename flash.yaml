@@ -11,7 +11,7 @@ custom:
     html, body { margin: 0; padding: 0; }
     @font-face {
       font-family: 'PlayfulBoxes';
-      src: url('./fonts/Playful Boxes.otf') format('opentype');
+      src: url('https://cdn.jsdelivr.net/gh/rhenryw/FLASH@main/fonts/Playful%20Boxes.otf') format('opentype');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
@@ -33,16 +33,28 @@ sections:
       id: home
       title: "FLASH"
       subtitle: "Build at light speed with YAML + BITs"
-      background: "#0010FF"
-      particleColor: "#FFDC00"
-      logoFontFamily: "PlayfulBoxes, InterVariable, system-ui, -apple-system, sans-serif"
+      background: "#0D1117"
+      logoUrl: "https://cdn.jsdelivr.net/gh/rhenryw/FLASH@main/img/logo.webp"
+      particles:
+        colors: ["#0010FF","#FFDC00","#FF9900"]
 
   - type: docs
     config:
       id: docs
       url: "https://raw.githubusercontent.com/rhenryw/FLASH/refs/heads/main/README.md"
       styles:
-        backgroundColor: "#ffffff"
-        textColor: "#24292f"
-        headingColor: "#1f2328"
+        backgroundColor: "#0D1117"
+        textColor: "#f0f2f5"
+        headingColor: "#ffffff"
         linkColor: "#0969da"
+
+  - type: spacer
+    config:
+      size: 100
+      color: "#0D1117"
+
+  - type: footer
+    config:
+      text: "Built with ⚡ FLASH"
+      color: "#f0f2f5"
+      background: "#0D1117"

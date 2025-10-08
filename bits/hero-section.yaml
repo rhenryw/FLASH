@@ -7,7 +7,7 @@ CSS: |
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: #0010FF; /* primary blue */
+    background: #0D1117;
     width: 100%;
   }
   [data-bit="hero-section"] .hero-content {
@@ -22,12 +22,7 @@ CSS: |
     font-size: clamp(2.5rem, 8vw, 5rem);
     font-weight: 800;
     margin-bottom: 1rem;
-    background: linear-gradient(45deg, #ffffff, #f0f0f0, #e0e0e0);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: text-shimmer 3s ease-in-out infinite;
+    color: #ffffff;
     line-height: 1.1;
   }
   [data-bit="hero-section"] .hero-title-main {
@@ -49,6 +44,12 @@ CSS: |
     margin-bottom: 2rem;
     opacity: 0.9;
     line-height: 1.6;
+  }
+  [data-bit="hero-section"] .hero-logo {
+    display: block;
+    width: clamp(120px, 25vw, 240px);
+    height: auto;
+    margin: 0 auto 1rem;
   }
   [data-bit="hero-section"] .hero-cta {
     display: inline-flex;
@@ -100,7 +101,7 @@ CSS: |
   [data-bit="hero-section"] .shape {
     position: absolute;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
+    background: transparent;
     animation: float 6s ease-in-out infinite;
   }
   [data-bit="hero-section"] .shape:nth-child(1) {
@@ -157,14 +158,22 @@ JS: |
   const titleContainer = document.createElement('div');
   titleContainer.className = 'hero-title';
 
-  // Main title
-  const mainTitle = document.createElement('span');
-  mainTitle.className = 'hero-title-main';
-  mainTitle.textContent = titleText;
-  if (config.logoFontFamily) {
-    mainTitle.style.fontFamily = String(config.logoFontFamily);
+  // If a logo is provided, use it instead of text
+  if (config.logoUrl) {
+    const img = document.createElement('img');
+    img.src = config.logoUrl;
+    img.alt = titleText || 'Logo';
+    img.className = 'hero-logo';
+    titleContainer.appendChild(img);
+  } else {
+    const mainTitle = document.createElement('span');
+    mainTitle.className = 'hero-title-main';
+    mainTitle.textContent = titleText;
+    if (config.logoFontFamily) {
+      mainTitle.style.fontFamily = String(config.logoFontFamily);
+    }
+    titleContainer.appendChild(mainTitle);
   }
-  titleContainer.appendChild(mainTitle);
 
   // Optional tagline/subtitle
   if (config.tagline) {
@@ -212,11 +221,15 @@ JS: |
   const shapesContainer = document.createElement('div');
   shapesContainer.className = 'floating-shapes';
 
-  const particleColor = utils.normalizeColor(config.particleColor || '#FFDC00');
+  const palette = (config.particles && Array.isArray(config.particles.colors) && config.particles.colors.length)
+    ? config.particles.colors
+    : ['#0010FF','#FFDC00','#FF9900'];
   for (let i = 0; i < 24; i++) {
     const shape = document.createElement('div');
     shape.className = 'shape';
-    shape.style.background = particleColor + '80';
+    const col = palette[i % palette.length];
+    shape.style.background = utils.normalizeColor(col);
+    shape.style.opacity = '0.8';
     shapesContainer.appendChild(shape);
   }
 

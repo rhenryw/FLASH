@@ -49,7 +49,18 @@ JS: |
   // Set container styles
   container.style.width = '100%';
   container.style.padding = '3rem 2rem';
-  container.style.background = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+  let bg = null;
+  if (typeof config.background === 'string') bg = config.background;
+  else if (config.background && typeof config.background.color === 'string') bg = config.background.color;
+  else if (typeof config.backgroundColor === 'string') bg = config.backgroundColor;
+  else if (config.style && typeof config.style.background === 'string') bg = config.style.background;
+  const bgValue = bg ? (bg.startsWith('#') ? utils.normalizeColor(bg) : bg)
+                     : 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+  container.style.setProperty('background', bgValue, 'important');
+  if (bg && bg.startsWith('#')) {
+    container.style.setProperty('background-image', 'none', 'important');
+    container.style.setProperty('background-color', utils.normalizeColor(bg), 'important');
+  }
   container.style.borderTop = '1px solid rgba(255, 255, 255, 0.1)';
   container.style.position = 'relative';
 

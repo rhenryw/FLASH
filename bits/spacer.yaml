@@ -13,3 +13,14 @@ JS: |
 
   const h = Number(config.size || config.height || 24);
   container.style.height = h + 'px';
+
+  // Support color / background overrides
+  if (typeof config.color === 'string') {
+    container.style.background = config.color;
+  }
+  if (typeof config.background === 'string') {
+    container.style.background = config.background;
+  }
+  if (typeof config.backgroundColor === 'string') {
+    container.style.backgroundColor = config.backgroundColor;
+  }

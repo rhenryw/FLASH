@@ -3,18 +3,36 @@ CSS: |
   [data-bit="docs"] {
     width: 100%;
     box-sizing: border-box;
+    background: #0D1117;
   }
   [data-bit="docs"] .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
   }
   /* GitHub-like Markdown styles (subset) */
   [data-bit="docs"] .markdown-body {
-    color: #24292f;
+    color: #ffffff;
     line-height: 1.6;
     word-wrap: break-word;
+    background: #0D1117;
+    padding: 0;
   }
+  /* Force light text for body copy elements */
+  [data-bit="docs"] .markdown-body p,
+  [data-bit="docs"] .markdown-body li,
+  [data-bit="docs"] .markdown-body td,
+  [data-bit="docs"] .markdown-body th,
+  [data-bit="docs"] .markdown-body span,
+  [data-bit="docs"] .markdown-body summary {
+    color: #ffffff !important;
+  }
+  [data-bit="docs"] .markdown-body hr { border-color: #30363d; }
+  [data-bit="docs"] .markdown-body table { border-color: #30363d; }
+  [data-bit="docs"] .markdown-body th,
+  [data-bit="docs"] .markdown-body td { border-color: #30363d; }
+  [data-bit="docs"] .markdown-body a { color: #ffffff; text-decoration: underline; }
   [data-bit="docs"] .markdown-body h1,
   [data-bit="docs"] .markdown-body h2,
   [data-bit="docs"] .markdown-body h3,
@@ -30,7 +48,7 @@ CSS: |
   [data-bit="docs"] .markdown-body h2 { font-size: 1.6rem; }
   [data-bit="docs"] .markdown-body h3 { font-size: 1.3rem; }
   [data-bit="docs"] .markdown-body p { margin: 1em 0; }
-  [data-bit="docs"] .markdown-body a { color: #0969da; text-decoration: none; }
+  [data-bit="docs"] .markdown-body a { color: #ffffff; text-decoration: underline; }
   [data-bit="docs"] .markdown-body a:hover { text-decoration: underline; }
   [data-bit="docs"] .markdown-body code, [data-bit="docs"] .markdown-body pre {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -52,7 +70,7 @@ CSS: |
     margin: 0;
     padding-left: 1em;
     border-left: 4px solid #d0d7de;
-    color: #57606a;
+    color: #cbd5e1;
   }
   [data-bit="docs"] .markdown-body table {
     width: 100%;
@@ -72,8 +90,8 @@ CSS: |
 JS: |
   const { container, config, utils } = ctx;
   const url = String(config.url || config.href || '').trim();
-  const bg = config.styles && config.styles.backgroundColor ? config.styles.backgroundColor : '#ffffff';
-  const textColor = config.styles && config.styles.textColor ? config.styles.textColor : '#24292f';
+  const bg = config.styles && config.styles.backgroundColor ? config.styles.backgroundColor : 'transparent';
+  const textColor = config.styles && config.styles.textColor ? config.styles.textColor : '#ffffff';
   const linkColor = config.styles && config.styles.linkColor ? config.styles.linkColor : '#0969da';
   const headingColor = config.styles && config.styles.headingColor ? config.styles.headingColor : '#1f2328';
 
