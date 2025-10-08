@@ -45,8 +45,6 @@ CSS: |
   }
 JS: |
   const { container, config, utils } = ctx;
-
-  // Set container styles
   container.style.width = '100%';
   container.style.padding = '3rem 2rem';
   let bg = null;
@@ -74,7 +72,6 @@ JS: |
   inner.style.lineHeight = '1.6';
   inner.textContent = config.text || '';
 
-  // Add footer links if provided
   if (config.links && Array.isArray(config.links) && config.links.length > 0) {
     const linksContainer = document.createElement('div');
     linksContainer.className = 'footer-links';

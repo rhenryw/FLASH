@@ -6,7 +6,6 @@ CSS: |
 JS: |
   const { container, config } = ctx;
 
-  // Apply style config if provided
   if (config.style && typeof config.style === 'object') {
     Object.assign(container.style, config.style);
   }
@@ -14,7 +13,6 @@ JS: |
   const h = Number(config.size || config.height || 24);
   container.style.height = h + 'px';
 
-  // Support color / background overrides
   if (typeof config.color === 'string') {
     container.style.background = config.color;
   }
