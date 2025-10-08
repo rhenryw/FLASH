@@ -1,12 +1,22 @@
+<p align="center">
+  <img src="https://github.com/rhenryw/FLASH/blob/359eafb5c629a86a825fed0345719dabb03450e5/img/ico.webp" width="127" alt="FLASH Logo"><br>
+  <em>Fast Lightweight Automatic Site Handler</em>
+</p>
+
+<p align="center">
+  <a target="_blank" href="https://discord.gg/XygZfmMM86">
+    <img src="https://dcbadge.limes.pink/api/server/XygZfmMM86" alt="Join Discord!" />
+  </a>
+  <br><br>
+  <img src="https://img.shields.io/github/stars/rhenryw/FLASH?style=social" alt="GitHub stars" />
+  <img src="https://img.shields.io/github/forks/rhenryw/FLASH?style=social" alt="GitHub forks" />
+  <img src="https://img.shields.io/badge/CDN-jsdelivr-blue" alt="CDN badge" />
+  <a href="https://www.jsdelivr.com/package/gh/rhenryw/FLASH">
+    <img src="https://data.jsdelivr.com/v1/package/gh/rhenryw/FLASH/badge" alt="jsDelivr badge" />
+  </a>
+</p>
+
 # FLASH
-Fast Lightweight Automatic Site Handler - Build Sites like never before
-
-<td><a target="_blank" href="https://discord.gg/XygZfmMM86"><img src="https://dcbadge.limes.pink/api/server/XygZfmMM86" alt="Join Discord!" /></a></td>
-
-![stars](https://img.shields.io/github/stars/rhenryw/FLASH?style=social)
-![forks](https://img.shields.io/github/forks/rhenryw/FLASH?style=social)
-![cdn](https://img.shields.io/badge/CDN-jsdelivr-blue)
-[![badge](https://data.jsdelivr.com/v1/package/gh/rhenryw/FLASH/badge)](https://www.jsdelivr.com/package/gh/rhenryw/FLASH)
 
 - [FLASH](#flash)
    * [Quick start](#quick-start)
