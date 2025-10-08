@@ -48,14 +48,39 @@ Paste these tags into your HTML `<head>`:
 <script src="https://cdn.jsdelivr.net/gh/rhenryw/cdns@main/src/index.min.js"></script>
 <script cdn="rhenryw/flash/dist/index.min.js lg=0 ref=main" defer></script>
 ```
-Put this into your HTML `<body>`
+Put this into your HTML `<body>`:
+
+**Option 1: External YAML file (traditional approach)**
 ```html
-<flash>
+<flash src="./flash.yaml">
 ```
 > [!NOTE]
-> You can add an `src` attribute with a path or link to your YAML file if it's not named `FLASH.yaml` at the root of your site
+> Add an `src` attribute with a path or link to your YAML file if it's not named `flash.yaml` at the root of your site
 
 Then create `flash.yaml` in the same directory:
+
+**Option 2: Inline YAML content**
+```html
+<flash>
+background:
+  color: "#0B0B0F"
+metadata:
+  title: "My FLASH Site"
+sections:
+  - type: headline
+    config:
+      text: "Hello FLASH"
+      size: 32
+  - type: paragraph
+    config:
+      text: "This page is powered by FLASH"
+      color: "#9CA3AF"
+</flash>
+```
+
+Choose the method that works best for your project structure!
+
+**Complete example for external file approach:**
 
 ```yaml
 background:

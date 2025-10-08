@@ -246,25 +246,51 @@
     return Promise.all(jobs);
   }
   function init() {
-    const flashEl = document.querySelector('flash[src]');
-    if (!flashEl) return;
-    const root = flashEl;
-    const srcAttr = flashEl.getAttribute('src') || '';
-    fetchText([srcAttr]).then(src => {
+    let flashEl = document.querySelector('flash[src]');
+    if (flashEl) {
+      const root = flashEl;
+      const srcAttr = flashEl.getAttribute('src') || '';
+      fetchText([srcAttr]).then(src => {
+        let parsed = {};
+        try {
+          parsed = (window.jsyaml || window.JSYAML || window.yaml || window.YAML).load(src) || {};
+        } catch (e) {
+          parsed = {};
+        }
+        try { setBitSources(parsed && parsed.bits); } catch (e) { bitSources = []; }
+        const cfg = minimalNormalize(parsed);
+        applyBackground(cfg);
+        applyMetadata(cfg.metadata);
+        applyCustom(cfg);
+        try { document.documentElement.style.scrollBehavior = 'smooth'; } catch (e) {}
+        return renderSections(root, cfg);
+      }).catch(() => {});
+      return;
+    }
+
+    const flashElements = document.querySelectorAll('flash');
+    for (const el of flashElements) {
+      if (el.getAttribute('src')) continue; 
+      if (el.children.length > 0) continue; 
+
+      const content = el.textContent?.trim();
+      if (!content) continue;
+
       let parsed = {};
       try {
-        parsed = (window.jsyaml || window.JSYAML || window.yaml || window.YAML).load(src) || {};
+        parsed = (window.jsyaml || window.JSYAML || window.yaml || window.YAML).load(content) || {};
       } catch (e) {
         parsed = {};
       }
+
       try { setBitSources(parsed && parsed.bits); } catch (e) { bitSources = []; }
       const cfg = minimalNormalize(parsed);
       applyBackground(cfg);
       applyMetadata(cfg.metadata);
       applyCustom(cfg);
       try { document.documentElement.style.scrollBehavior = 'smooth'; } catch (e) {}
-      return renderSections(root, cfg);
-    }).catch(() => {});
+      return renderSections(el, cfg);
+    }
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
