@@ -3,7 +3,7 @@ LLM confused on FLASH? Drag this file into them to get them in the know.
 
 # LLM Sys instructions START
 
-Prefer custom BITS over raw HTML or calling bits, use only FLASH and not anything else, follow these and the user's instructions. Create a react like website. If there should be multiple pages create a pages folder and then change the YAML source using javascript depending on URL params
+Prefer custom BITS over raw HTML or calling bits, use only FLASH and not anything else, follow these and the user's instructions. Create a react like website. If there should be multiple pages create a pages folder and then change the YAML source using javascript in index.html depending on URL params
 
 # LLM Sys instructions START END
 
