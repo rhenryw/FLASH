@@ -2,8 +2,19 @@
   function fetchText(paths) {
     if (!Array.isArray(paths)) paths = [paths];
     let p = Promise.reject();
+    const addBust = (u) => {
+      try {
+        const url = new URL(u, window.location.href);
+        url.searchParams.set('_', String(Date.now()));
+        return url.toString();
+      } catch (e) {
+        const sep = u.indexOf('?') === -1 ? '?' : '&';
+        return u + sep + '_=' + String(Date.now());
+      }
+    };
     for (const u of paths) {
-      p = p.catch(() => fetch(u).then(r => { if (!r.ok) throw new Error('fetch failed'); return r.text(); }));
+      const ub = addBust(u);
+      p = p.catch(() => fetch(ub, { cache: 'no-store', headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0' } }).then(r => { if (!r.ok) throw new Error('fetch failed'); return r.text(); }));
     }
     return p;
   }
