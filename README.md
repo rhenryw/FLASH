@@ -29,7 +29,9 @@
    * [Custom HTML/CSS/JS at the site level](#custom-htmlcssjs-at-the-site-level)
    * [Using custom BIT sources](#using-custom-bit-sources)
    * [Build script](#build-script)
+   * [Alternative FLASH Uses](#alternative-flash-uses)
 - [More BITs info](https://github.com/rhenryw/FLASH/tree/main/bits)
+- [LLM Help](https://github.com/rhenryw/FLASH/blob/main/llm.md)
   
 ## Quick start
 
@@ -278,3 +280,9 @@ sections:
 ## Build script
 
 - `npm run build`
+
+# Alternative FLASH Uses
+
+For LLMs use [llm.md](https://github.com/rhenryw/FLASH/blob/main/llm.md) to help it understand
+
+FLASH is a fantastic tool for LLMs, offering a swift and efficient method for them to generate user-desired content. I envision developing an AI-driven site builder utilizing FLASH in the future. Additionally, integrating WYSIWYG editors with FLASH would be beneficial, allowing for the creation and manipulation of BIT components through a user-friendly drag-and-drop interface.
