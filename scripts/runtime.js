@@ -256,54 +256,87 @@
     });
     return Promise.all(jobs);
   }
-  function init() {
-    let flashEl = document.querySelector('flash[src]');
-    if (flashEl) {
-      const root = flashEl;
-      const srcAttr = flashEl.getAttribute('src') || '';
-      fetchText([srcAttr]).then(src => {
-        let parsed = {};
-        try {
-          parsed = (window.jsyaml || window.JSYAML || window.yaml || window.YAML).load(src) || {};
-        } catch (e) {
-          parsed = {};
-        }
-        try { setBitSources(parsed && parsed.bits); } catch (e) { bitSources = []; }
-        const cfg = minimalNormalize(parsed);
-        applyBackground(cfg);
-        applyMetadata(cfg.metadata);
-        applyCustom(cfg);
-        try { document.documentElement.style.scrollBehavior = 'smooth'; } catch (e) {}
-        return renderSections(root, cfg);
-      }).catch(() => {});
-      return;
-    }
-
-    const flashElements = document.querySelectorAll('flash');
-    for (const el of flashElements) {
-      if (el.getAttribute('src')) continue; 
-      if (el.children.length > 0) continue; 
-
-      const content = el.textContent?.trim();
-      if (!content) continue;
-
+  function renderFromSrc(el) {
+    const current = el.getAttribute('src') || '';
+    const mark = el.getAttribute('data-flash-processed-src') || '';
+    if (mark === current && el.getAttribute('data-flash-done') === '1') return;
+    el.setAttribute('data-flash-processed-src', current);
+    fetchText([current]).then(src => {
       let parsed = {};
       try {
-        parsed = (window.jsyaml || window.JSYAML || window.yaml || window.YAML).load(content) || {};
+        parsed = (window.jsyaml || window.JSYAML || window.yaml || window.YAML).load(src) || {};
       } catch (e) {
         parsed = {};
       }
-
-      el.textContent = '';
-
       try { setBitSources(parsed && parsed.bits); } catch (e) { bitSources = []; }
       const cfg = minimalNormalize(parsed);
       applyBackground(cfg);
       applyMetadata(cfg.metadata);
       applyCustom(cfg);
       try { document.documentElement.style.scrollBehavior = 'smooth'; } catch (e) {}
-      return renderSections(el, cfg);
+      return renderSections(el, cfg).then(() => { el.setAttribute('data-flash-done', '1'); });
+    }).catch(() => {
+      const msg = document.createElement('div');
+      msg.style.padding = '16px';
+      msg.style.color = '#f66';
+      msg.style.fontFamily = 'system-ui, -apple-system, Segoe UI, Roboto, Ubuntu';
+      msg.textContent = 'Failed to load: ' + current;
+      el.innerHTML = '';
+      el.appendChild(msg);
+      el.setAttribute('data-flash-done', '1');
+    });
+  }
+  function renderInline(el) {
+    if (el.children.length > 0) return;
+    const content = el.textContent?.trim();
+    if (!content) return;
+    let parsed = {};
+    try {
+      parsed = (window.jsyaml || window.JSYAML || window.yaml || window.YAML).load(content) || {};
+    } catch (e) {
+      parsed = {};
     }
+    el.textContent = '';
+    try { setBitSources(parsed && parsed.bits); } catch (e) { bitSources = []; }
+    const cfg = minimalNormalize(parsed);
+    applyBackground(cfg);
+    applyMetadata(cfg.metadata);
+    applyCustom(cfg);
+    try { document.documentElement.style.scrollBehavior = 'smooth'; } catch (e) {}
+    return renderSections(el, cfg);
+  }
+  function processAll() {
+    const srcEls = document.querySelectorAll('flash[src]');
+    srcEls.forEach(el => renderFromSrc(el));
+    const inlineEls = document.querySelectorAll('flash:not([src])');
+    inlineEls.forEach(el => renderInline(el));
+  }
+  function startObserver() {
+    const obs = new MutationObserver(list => {
+      for (const m of list) {
+        if (m.type === 'attributes' && m.target && m.target.tagName && m.target.tagName.toLowerCase() === 'flash' && m.attributeName === 'src') {
+          m.target.removeAttribute('data-flash-done');
+          renderFromSrc(m.target);
+        }
+        if (m.type === 'childList') {
+          m.addedNodes && m.addedNodes.forEach(node => {
+            if (node.nodeType === 1 && node.tagName && node.tagName.toLowerCase() === 'flash') {
+              if (node.getAttribute('src')) renderFromSrc(node); else renderInline(node);
+            }
+            if (node.nodeType === 1) {
+              node.querySelectorAll && node.querySelectorAll('flash').forEach(el => {
+                if (el.getAttribute('src')) renderFromSrc(el); else renderInline(el);
+              });
+            }
+          });
+        }
+      }
+    });
+    obs.observe(document.documentElement || document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['src'] });
+  }
+  function init() {
+    processAll();
+    startObserver();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
