@@ -1,4 +1,14 @@
 (() => {
+  function switchSourceImpl(path) {
+    try {
+      const el = document.querySelector('flash[src]') || document.querySelector('flash');
+      if (!el) return;
+      if (!el.getAttribute('src')) {
+        el.textContent = '';
+      }
+      el.setAttribute('src', String(path || ''));
+    } catch (e) {}
+  }
   function fetchText(paths) {
     if (!Array.isArray(paths)) paths = [paths];
     let p = Promise.reject();
@@ -225,13 +235,37 @@
   }
   function renderBitSection(meta, section, container) {
     const name = section.name;
+    if (name === 'frame') {
+      const cfg = section.config || {};
+      const srcVal = typeof cfg === 'string' ? cfg : (cfg.src || cfg.url || cfg.path || '');
+      const iframe = document.createElement('iframe');
+      iframe.style.width = '100%';
+      iframe.style.border = '0';
+      iframe.style.display = 'block';
+      const h = typeof cfg.height === 'number' ? (cfg.height + 'px') : (cfg.height || '100vh');
+      iframe.style.height = h;
+      const sandbox = cfg.sandbox;
+      if (typeof sandbox === 'string') iframe.setAttribute('sandbox', sandbox);
+      const allow = cfg.allow;
+      if (typeof allow === 'string') iframe.setAttribute('allow', allow);
+      if (/\.ya?ml(\?|#|$)/i.test(srcVal)) {
+        const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1" />\n<script src="https://cdn.jsdelivr.net/gh/rhenryw/cdns@main/src/index.min.js"></script>\n<script cdn="rhenryw/flash/dist/index.min.js lg=0 ref=main" defer></script></head><body><flash src="' + srcVal.replace(/"/g, '&quot;') + '"></flash></body></html>';
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        iframe.src = url;
+      } else {
+        iframe.src = srcVal;
+      }
+      container.appendChild(iframe);
+      return Promise.resolve();
+    }
     return loadBitDefinition(name).then(def => {
       applyBitCss(name, def && (def.CSS || def.css));
       const ctx = {
         container,
         config: section.config || {},
         metadata: meta || {},
-        utils: { normalizeColor }
+        utils: { normalizeColor, switchSource: switchSourceImpl }
       };
       const jsCode = def && (def.JS || def.js);
       executeBitJs(name, jsCode, ctx);
@@ -256,6 +290,28 @@
     });
     return Promise.all(jobs);
   }
+  function maybeRemapByParams(el, parsed, currentSrc) {
+    const map = (parsed && (parsed.Params || parsed.params)) || null;
+    if (!map || typeof map !== 'object') return false;
+    const params = new URLSearchParams(String(window.location.search || ''));
+    let dest = '';
+    for (const key of Object.keys(map)) {
+      const val = params.get(key);
+      if (val == null) continue;
+      const entry = map[key];
+      if (typeof entry === 'string') { dest = entry; break; }
+      if (entry && typeof entry === 'object') {
+        if (typeof entry[val] === 'string') { dest = entry[val]; break; }
+        if (typeof entry.default === 'string') { dest = entry.default; break; }
+      }
+    }
+    if (dest && dest !== currentSrc) {
+      el.removeAttribute('data-flash-done');
+      el.setAttribute('src', dest);
+      return true;
+    }
+    return false;
+  }
   function renderFromSrc(el) {
     const current = el.getAttribute('src') || '';
     const mark = el.getAttribute('data-flash-processed-src') || '';
@@ -268,6 +324,7 @@
       } catch (e) {
         parsed = {};
       }
+      if (maybeRemapByParams(el, parsed, current)) return;
       try { setBitSources(parsed && parsed.bits); } catch (e) { bitSources = []; }
       const cfg = minimalNormalize(parsed);
       applyBackground(cfg);
@@ -296,6 +353,7 @@
     } catch (e) {
       parsed = {};
     }
+    if (maybeRemapByParams(el, parsed, '')) return;
     el.textContent = '';
     try { setBitSources(parsed && parsed.bits); } catch (e) { bitSources = []; }
     const cfg = minimalNormalize(parsed);
@@ -337,6 +395,9 @@
   function init() {
     processAll();
     startObserver();
+    try { window.switchSource = switchSourceImpl; } catch (e) {}
+    window.addEventListener('popstate', processAll);
+    window.addEventListener('hashchange', processAll);
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

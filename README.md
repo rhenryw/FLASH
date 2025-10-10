@@ -202,6 +202,62 @@ sections:
       message: "Welcome!"
 ```
 
+## Global API: switchSource
+
+You can change the active page YAML at runtime.
+
+```js
+// Switch the current <flash> to a different YAML file or URL
+switchSource('./pages/about.yaml')
+```
+
+Inside BIT JS, call it via `ctx.utils.switchSource`:
+
+```js
+const { container, utils } = ctx;
+const btn = document.createElement('button');
+btn.textContent = 'Go to About';
+btn.onclick = () => utils.switchSource('./pages/about.yaml');
+container.appendChild(btn);
+```
+
+## Param-based source remapping (Params)
+
+At the top level of your page YAML, add a `Params` (or `params`) map to remap the page source based on URL query parameters. If a mapping matches, FLASH will update the `<flash src>` to that target before rendering.
+
+```yaml
+Params:
+  hi:
+    "1": "./pages/hi1.yaml"
+    "2": "./pages/hi2.yaml"
+    default: "./pages/home.yaml"
+```
+
+Examples:
+- Visiting `?hi=1` loads `./pages/hi1.yaml`
+- Visiting `?hi=2` loads `./pages/hi2.yaml`
+- If `hi` is missing or unmapped, falls back to `default`
+
+Works for inline `<flash>...</flash>` and external `<flash src="...">`.
+
+## Frame section (embed URLs or YAML pages)
+
+Use a built-in `frame` section to embed an iframe. If the `src` ends in `.yaml`/`.yml`, it embeds a nested FLASH instance pointing at that YAML; otherwise it loads the URL directly.
+
+```yaml
+sections:
+  - type: frame
+    config:
+      src: "./pages/hi.yaml"   # or an external URL
+      height: "100vh"           # number or CSS string
+      sandbox: "allow-scripts allow-same-origin"
+      allow: "fullscreen"
+```
+
+Notes:
+- For YAML sources, the iframe includes FLASH automatically and points `flash[src]` at your YAML.
+- For normal URLs, it behaves like a standard iframe.
+
 ## Custom HTML/CSS/JS at the site level
 
 You can inject custom CSS/JS for the whole site via a `custom` block in `flash.yaml`:
