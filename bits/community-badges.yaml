@@ -1,0 +1,82 @@
+Name: community-badges
+CSS: |
+  [data-bit="community-badges"] {
+    padding: 5rem 2rem;
+    background: linear-gradient(180deg, #0B0B0F 0%, #0d0d11 50%, #0B0B0F 100%);
+    width: 100%;
+  }
+  [data-bit="community-badges"] .community-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  [data-bit="community-badges"] .community-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 2rem;
+  }
+  [data-bit="community-badges"] .badges-wrapper {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  [data-bit="community-badges"] .badges-wrapper a {
+    transition: transform 0.3s ease;
+    display: inline-block;
+  }
+  [data-bit="community-badges"] .badges-wrapper a:hover {
+    transform: translateY(-3px);
+  }
+  [data-bit="community-badges"] .badges-wrapper img {
+    display: block;
+  }
+
+JS: |
+  const { container, config } = ctx;
+  
+  const wrapper = document.createElement('div');
+  wrapper.className = 'community-container';
+  
+  const title = document.createElement('h2');
+  title.className = 'community-title';
+  title.textContent = config.title || 'Join the Community';
+  
+  const badgesWrapper = document.createElement('div');
+  badgesWrapper.className = 'badges-wrapper';
+  
+  // Discord badge
+  if (config.discord) {
+    const discordLink = document.createElement('a');
+    discordLink.href = config.discord;
+    discordLink.target = '_blank';
+    const discordImg = document.createElement('img');
+    discordImg.src = `https://dcbadge.limes.pink/api/server/${config.discord.split('/').pop()}`;
+    discordImg.alt = 'Join Discord';
+    discordImg.style.height = '40px';
+    discordLink.appendChild(discordImg);
+    badgesWrapper.appendChild(discordLink);
+  }
+  
+  // GitHub stars
+  if (config.github) {
+    const starsImg = document.createElement('img');
+    starsImg.src = `https://img.shields.io/github/stars/${config.github}?style=social`;
+    starsImg.alt = 'GitHub stars';
+    starsImg.style.height = '28px';
+    starsImg.style.marginTop = '6px';
+    badgesWrapper.appendChild(starsImg);
+    
+    const forksImg = document.createElement('img');
+    forksImg.src = `https://img.shields.io/github/forks/${config.github}?style=social`;
+    forksImg.alt = 'GitHub forks';
+    forksImg.style.height = '28px';
+    forksImg.style.marginTop = '6px';
+    badgesWrapper.appendChild(forksImg);
+  }
+  
+  wrapper.appendChild(title);
+  wrapper.appendChild(badgesWrapper);
+  container.appendChild(wrapper);

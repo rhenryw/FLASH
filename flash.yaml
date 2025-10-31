@@ -2,22 +2,24 @@ background:
   color: "#0B0B0F"
 
 metadata:
-  title: "FLASH - Build Stunning Sites at Light Speed"
-  description: "Create amazing websites with declarative YAML, reusable components, and stunning animations. The future of web development is here."
-  favicon: "https://cdn.jsdelivr.net/gh/rhenryw/FLASH@main/img/ico.webp"
+  title: "FLASH - Fast Lightweight Automatic Site Handler"
+  description: "Build stunning websites at light speed with declarative YAML and reusable BITs. No bundlers, no framework bloat - just pure speed."
+  favicon: "./img/ico.webp"
+  author: "FLASH Team"
+  image: "./img/logo.webp"
 
 custom:
   css: |
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    [data-bit="hero-section"] .hero-title-main { font-family: 'PlayfulBoxes', InterVariable, system-ui, -apple-system, sans-serif; }
+    html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
+    body { background: #0B0B0F; overflow-x: hidden; }
   js: |
-    document.addEventListener('DOMContentLoaded', function() {
-      document.body.style.opacity = '0';
+    document.body.style.opacity = '0';
+    window.addEventListener('load', () => {
       setTimeout(() => {
-        document.body.style.transition = 'opacity 0.4s ease';
+        document.body.style.transition = 'opacity 0.6s';
         document.body.style.opacity = '1';
-      }, 80);
+      }, 100);
     });
 
 sections:
@@ -25,29 +27,164 @@ sections:
     config:
       id: home
       title: "FLASH"
-      subtitle: "Build at light speed with YAML + BITs"
-      background: "#0D1117"
-      logoUrl: "https://cdn.jsdelivr.net/gh/rhenryw/FLASH@main/img/logo.webp"
+      subtitle: "Fast Lightweight Automatic Site Handler"
+      background: "linear-gradient(135deg, #0B0B0F 0%, #1a1a2e 50%, #16213e 100%)"
+      logoUrl: "./img/logo.webp"
       particles:
-        colors: ["#0010FF","#FFDC00","#FF9900"]
+        colors: ["#0010FF", "#FFDC00", "#FF9900", "#667eea", "#764ba2"]
+        count: 50
 
-  - type: docs
+  - type: features-grid
     config:
-      id: docs
-      url: "https://raw.githubusercontent.com/rhenryw/FLASH/refs/heads/main/README.md"
-      styles:
-        backgroundColor: "#0D1117"
-        textColor: "#f0f2f5"
-        headingColor: "#ffffff"
-        linkColor: "#0969da"
+      id: features
+      title: "Why FLASH?"
+      features:
+        - icon: "⚡"
+          title: "Lightning Fast"
+          description: "No build step required. Load your YAML, render instantly. FLASH runs directly in the browser with zero bundling."
+        - icon: "🎨"
+          title: "Declarative Design"
+          description: "Define your entire site in clean YAML. No React, no Vue - just simple, readable configuration."
+        - icon: "🧩"
+          title: "Reusable BITs"
+          description: "Create once, use everywhere. BITs are modular components you can share across projects and with the community."
+        - icon: "🎯"
+          title: "No Dependencies"
+          description: "Pure vanilla JavaScript. No massive node_modules, no framework lock-in, just lightweight code."
+        - icon: "🚀"
+          title: "CDN Ready"
+          description: "Deploy to any CDN instantly. FLASH loads from jsdelivr and works anywhere HTML does."
+        - icon: "💡"
+          title: "AI-Friendly"
+          description: "Perfect for LLMs to generate sites. Simple syntax means AI can build stunning pages effortlessly."
 
   - type: spacer
     config:
-      size: 100
-      color: "#0D1117"
+      size: 80
+      color: "#0B0B0F"
+
+  - type: glowing-divider
+    config:
+      icon: "🔥"
+      width: "500px"
+
+  - type: stats-counter
+    config:
+      stats:
+        - icon: "⚡"
+          value: 100
+          suffix: "%"
+          label: "Pure Vanilla JS"
+        - icon: "🚀"
+          value: 0
+          suffix: "ms"
+          label: "Build Time"
+        - icon: "📦"
+          value: 0
+          suffix: " KB"
+          label: "Dependencies"
+        - icon: "📊"
+          api: "https://data.jsdelivr.com/v1/stats/packages/gh/rhenryw/FLASH"
+          suffix: ""
+          label: "CDN Hits"
+
+  - type: spacer
+    config:
+      size: 80
+      color: "#0B0B0F"
+
+  - type: iframe-carousel
+    config:
+      id: showcase
+      title: "Built with FLASH"
+      subtitle: "Real websites powered by FLASH - fast, beautiful, and simple"
+      autoplay: true
+      autoplayDelay: 6000
+      sites:
+        - name: "FLASH Official"
+          url: "https://rhenryw.github.io/FLASH/"
+        - name: "Dionysus"
+          url: "https://dionysus-website.pages.dev/"
+        - name: "jScramble"
+          url: "https://rhenryw.github.io/jScramble/"
+
+  - type: spacer
+    config:
+      size: 60
+      color: "#0B0B0F"
+
+  - type: glowing-divider
+    config:
+      icon: "🎨"
+      width: "450px"
+
+  - type: image-gallery
+    config:
+      id: gallery
+      title: "Visual Assets"
+      subtitle: "Logos, icons, and branding materials"
+      images:
+        - src: "./img/logo.webp"
+          caption: "FLASH Logo"
+        - src: "./img/ico.webp"
+          caption: "Icon"
+        - src: "./img/logo.svg"
+          caption: "Logo SVG"
+        - src: "./img/ico.svg"
+          caption: "Icon SVG"
+        - src: "./img/logo.png"
+          caption: "Logo PNG"
+        - src: "./img/ico.png"
+          caption: "Icon PNG"
+
+  - type: spacer
+    config:
+      size: 40
+      color: "#0B0B0F"
+
+  - type: raw-html
+    content: |
+      <section style="padding: 60px 20px; background: linear-gradient(135deg, #0B0B0F 0%, #0d0d12 100%); text-align: center;">
+        <h2 style="font-size: 2.5em; margin-bottom: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">88x31 Buttons</h2>
+        <p style="font-size: 1.1em; color: #999; margin-bottom: 40px;">Retro web badges for your site</p>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <img src="./img/button.png" alt="FLASH 88x31 Button PNG" style="width: 88px; height: 31px; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 4px;">
+            <span style="color: #999; font-size: 0.9em;">PNG Format</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <img src="./img/button.gif" alt="FLASH 88x31 Button GIF" style="width: 88px; height: 31px; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 4px;">
+            <span style="color: #999; font-size: 0.9em;">GIF Format</span>
+          </div>
+        </div>
+      </section>
+
+  - type: spacer
+    config:
+      size: 60
+      color: "#0B0B0F"
+
+  - type: glowing-divider
+    config:
+      icon: "💬"
+      width: "500px"
+
+  - type: community-badges
+    config:
+      title: "Join the Community"
+      discord: "https://discord.gg/XygZfmMM86"
+      github: "rhenryw/FLASH"
+
+  - type: badge-88x31
+    config:
+      title: "Made with FLASH"
+      src: "./img/button.png"
+      href: "https://github.com/rhenryw/FLASH"
+      target: "_blank"
+      alt: "FLASH - Build at Light Speed"
 
   - type: footer
     config:
       text: "Built with ⚡ FLASH"
       color: "#f0f2f5"
-      background: "#0D1117"
+      background: "#0B0B0F"

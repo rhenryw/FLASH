@@ -1,0 +1,66 @@
+Name: animated-logo
+CSS: |
+  [data-bit="animated-logo"] {
+    padding: 3rem 2rem;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  [data-bit="animated-logo"] .logo-container {
+    position: relative;
+    display: inline-block;
+  }
+  [data-bit="animated-logo"] .logo-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 40px rgba(102, 126, 234, 0.6));
+    animation: float 3s ease-in-out infinite;
+    transition: all 0.3s ease;
+  }
+  [data-bit="animated-logo"] .logo-img:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 15px 60px rgba(102, 126, 234, 0.8));
+  }
+  [data-bit="animated-logo"] .logo-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.4) 0%, transparent 70%);
+    animation: glow 2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+  @keyframes glow {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  }
+
+JS: |
+  const { container, config } = ctx;
+  
+  const wrapper = document.createElement('div');
+  wrapper.className = 'logo-container';
+  
+  const glow = document.createElement('div');
+  glow.className = 'logo-glow';
+  
+  const img = document.createElement('img');
+  img.className = 'logo-img';
+  img.src = config.src || './img/logo.webp';
+  img.alt = config.alt || 'FLASH Logo';
+  img.style.width = config.width || 'auto';
+  img.style.maxWidth = config.maxWidth || '400px';
+  
+  wrapper.appendChild(glow);
+  wrapper.appendChild(img);
+  container.appendChild(wrapper);

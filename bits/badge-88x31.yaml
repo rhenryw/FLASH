@@ -1,0 +1,76 @@
+Name: badge-88x31
+CSS: |
+  [data-bit="badge-88x31"] {
+    padding: 3rem 2rem;
+    background: #0B0B0F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  [data-bit="badge-88x31"] .badge-container {
+    text-align: center;
+  }
+  [data-bit="badge-88x31"] .badge-title {
+    font-size: 1.2rem;
+    color: #94a3b8;
+    margin-bottom: 1rem;
+  }
+  [data-bit="badge-88x31"] .badge-link {
+    display: inline-block;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  [data-bit="badge-88x31"] .badge-link::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+  }
+  [data-bit="badge-88x31"] .badge-link:hover::after {
+    opacity: 0.5;
+  }
+  [data-bit="badge-88x31"] .badge-link:hover {
+    transform: scale(1.1) translateY(-5px);
+  }
+  [data-bit="badge-88x31"] .badge-img {
+    width: 88px;
+    height: 31px;
+    display: block;
+    image-rendering: pixelated;
+    border-radius: 4px;
+  }
+
+JS: |
+  const { container, config } = ctx;
+  
+  const wrapper = document.createElement('div');
+  wrapper.className = 'badge-container';
+  
+  if (config.title) {
+    const title = document.createElement('p');
+    title.className = 'badge-title';
+    title.textContent = config.title;
+    wrapper.appendChild(title);
+  }
+  
+  const link = document.createElement('a');
+  link.className = 'badge-link';
+  link.href = config.href || '#';
+  if (config.target) link.target = config.target;
+  
+  const img = document.createElement('img');
+  img.className = 'badge-img';
+  img.src = config.src || './img/button.png';
+  img.alt = config.alt || 'FLASH Badge';
+  
+  link.appendChild(img);
+  wrapper.appendChild(link);
+  container.appendChild(wrapper);

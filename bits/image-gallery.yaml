@@ -1,0 +1,218 @@
+Name: image-gallery
+CSS: |
+  [data-bit="image-gallery"] {
+    padding: 5rem 2rem;
+    background: linear-gradient(180deg, #0B0B0F 0%, #0e0e13 50%, #0B0B0F 100%);
+    width: 100%;
+  }
+  [data-bit="image-gallery"] .gallery-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  [data-bit="image-gallery"] .gallery-title {
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 1rem;
+  }
+  [data-bit="image-gallery"] .gallery-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #94a3b8;
+    margin-bottom: 3rem;
+  }
+  [data-bit="image-gallery"] .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  [data-bit="image-gallery"] .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+  }
+  [data-bit="image-gallery"] .gallery-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+  }
+  [data-bit="image-gallery"] .gallery-item:hover::before {
+    opacity: 1;
+  }
+  [data-bit="image-gallery"] .gallery-item:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+  }
+  [data-bit="image-gallery"] .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+    max-height: 300px;
+  }
+  [data-bit="image-gallery"] .gallery-item:hover img {
+    transform: scale(1.1);
+  }
+  [data-bit="image-gallery"] .gallery-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+    font-size: 0.9rem;
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+    z-index: 2;
+  }
+  [data-bit="image-gallery"] .gallery-item:hover .gallery-caption {
+    transform: translateY(0);
+  }
+  [data-bit="image-gallery"] .lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  [data-bit="image-gallery"] .lightbox.active {
+    display: flex;
+  }
+  [data-bit="image-gallery"] .lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 10px;
+  }
+  [data-bit="image-gallery"] .lightbox-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  [data-bit="image-gallery"] .lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+  }
+
+JS: |
+  const { container, config } = ctx;
+  
+  const title = config.title || 'Gallery';
+  const subtitle = config.subtitle || '';
+  const images = config.images || [];
+  
+  const wrapper = document.createElement('div');
+  wrapper.className = 'gallery-container';
+  
+  if (title) {
+    const titleEl = document.createElement('h2');
+    titleEl.className = 'gallery-title';
+    titleEl.textContent = title;
+    wrapper.appendChild(titleEl);
+  }
+  
+  if (subtitle) {
+    const subtitleEl = document.createElement('p');
+    subtitleEl.className = 'gallery-subtitle';
+    subtitleEl.textContent = subtitle;
+    wrapper.appendChild(subtitleEl);
+  }
+  
+  const grid = document.createElement('div');
+  grid.className = 'gallery-grid';
+  
+  images.forEach((image, index) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    
+    const img = document.createElement('img');
+    img.src = image.src || image;
+    img.alt = image.alt || image.caption || `Gallery image ${index + 1}`;
+    img.loading = 'lazy';
+    
+    item.appendChild(img);
+    
+    if (image.caption) {
+      const caption = document.createElement('div');
+      caption.className = 'gallery-caption';
+      caption.textContent = image.caption;
+      item.appendChild(caption);
+    }
+    
+    // Lightbox functionality
+    item.onclick = () => openLightbox(image.src || image);
+    
+    grid.appendChild(item);
+  });
+  
+  wrapper.appendChild(grid);
+  
+  // Create lightbox
+  const lightbox = document.createElement('div');
+  lightbox.className = 'lightbox';
+  
+  const lightboxImg = document.createElement('img');
+  lightbox.appendChild(lightboxImg);
+  
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'lightbox-close';
+  closeBtn.innerHTML = '×';
+  closeBtn.onclick = closeLightbox;
+  lightbox.appendChild(closeBtn);
+  
+  lightbox.onclick = (e) => {
+    if (e.target === lightbox) closeLightbox();
+  };
+  
+  wrapper.appendChild(lightbox);
+  container.appendChild(wrapper);
+  
+  function openLightbox(src) {
+    lightboxImg.src = src;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  
+  // ESC key to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });

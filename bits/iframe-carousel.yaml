@@ -1,0 +1,211 @@
+Name: iframe-carousel
+CSS: |
+  [data-bit="iframe-carousel"] {
+    padding: 5rem 2rem;
+    background: linear-gradient(180deg, #0B0B0F 0%, #0d0d12 50%, #0B0B0F 100%);
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+  [data-bit="iframe-carousel"] .carousel-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+  }
+  [data-bit="iframe-carousel"] .carousel-title {
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 1rem;
+  }
+  [data-bit="iframe-carousel"] .carousel-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #94a3b8;
+    margin-bottom: 3rem;
+  }
+  [data-bit="iframe-carousel"] .carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+  [data-bit="iframe-carousel"] .carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  [data-bit="iframe-carousel"] .carousel-slide {
+    min-width: 100%;
+    position: relative;
+  }
+  [data-bit="iframe-carousel"] .carousel-slide iframe {
+    width: 100%;
+    height: 70vh;
+    border: none;
+    display: block;
+  }
+  [data-bit="iframe-carousel"] .carousel-controls {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    pointer-events: none;
+  }
+  [data-bit="iframe-carousel"] .carousel-btn {
+    pointer-events: all;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  [data-bit="iframe-carousel"] .carousel-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+  [data-bit="iframe-carousel"] .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem 0;
+  }
+  [data-bit="iframe-carousel"] .carousel-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  [data-bit="iframe-carousel"] .carousel-indicator.active {
+    background: rgba(255, 255, 255, 0.9);
+    width: 32px;
+    border-radius: 6px;
+  }
+
+JS: |
+  const { container, config } = ctx;
+  
+  const title = config.title || 'Showcase';
+  const subtitle = config.subtitle || 'Explore amazing websites built with FLASH';
+  const sites = config.sites || [];
+  
+  let currentIndex = 0;
+  let autoplayInterval;
+  
+  const wrapper = document.createElement('div');
+  wrapper.className = 'carousel-container';
+  
+  const titleEl = document.createElement('h2');
+  titleEl.className = 'carousel-title';
+  titleEl.textContent = title;
+  
+  const subtitleEl = document.createElement('p');
+  subtitleEl.className = 'carousel-subtitle';
+  subtitleEl.textContent = subtitle;
+  
+  const carouselWrapper = document.createElement('div');
+  carouselWrapper.className = 'carousel-wrapper';
+  
+  const track = document.createElement('div');
+  track.className = 'carousel-track';
+  
+  // Create slides
+  sites.forEach((site, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'carousel-slide';
+    
+    const iframe = document.createElement('iframe');
+    iframe.src = site.url;
+    iframe.title = site.name || `Site ${index + 1}`;
+    iframe.loading = index === 0 ? 'eager' : 'lazy';
+    if (site.sandbox) iframe.sandbox = site.sandbox;
+    if (site.allow) iframe.allow = site.allow;
+    
+    slide.appendChild(iframe);
+    track.appendChild(slide);
+  });
+  
+  // Controls
+  const controls = document.createElement('div');
+  controls.className = 'carousel-controls';
+  
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'carousel-btn';
+  prevBtn.innerHTML = '‹';
+  prevBtn.onclick = () => navigate(-1);
+  
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'carousel-btn';
+  nextBtn.innerHTML = '›';
+  nextBtn.onclick = () => navigate(1);
+  
+  controls.appendChild(prevBtn);
+  controls.appendChild(nextBtn);
+  
+  // Indicators
+  const indicators = document.createElement('div');
+  indicators.className = 'carousel-indicators';
+  
+  sites.forEach((_, index) => {
+    const indicator = document.createElement('div');
+    indicator.className = 'carousel-indicator' + (index === 0 ? ' active' : '');
+    indicator.onclick = () => goToSlide(index);
+    indicators.appendChild(indicator);
+  });
+  
+  carouselWrapper.appendChild(track);
+  carouselWrapper.appendChild(controls);
+  
+  wrapper.appendChild(titleEl);
+  wrapper.appendChild(subtitleEl);
+  wrapper.appendChild(carouselWrapper);
+  wrapper.appendChild(indicators);
+  
+  container.appendChild(wrapper);
+  
+  function navigate(direction) {
+    currentIndex = (currentIndex + direction + sites.length) % sites.length;
+    updateCarousel();
+    resetAutoplay();
+  }
+  
+  function goToSlide(index) {
+    currentIndex = index;
+    updateCarousel();
+    resetAutoplay();
+  }
+  
+  function updateCarousel() {
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    
+    const allIndicators = indicators.querySelectorAll('.carousel-indicator');
+    allIndicators.forEach((ind, i) => {
+      ind.classList.toggle('active', i === currentIndex);
+    });
+  }
+  
+  function resetAutoplay() {
+    if (autoplayInterval) clearInterval(autoplayInterval);
+    if (config.autoplay !== false) {
+      autoplayInterval = setInterval(() => navigate(1), config.autoplayDelay || 5000);
+    }
+  }
+  
+  if (config.autoplay !== false && sites.length > 1) {
+    resetAutoplay();
+  }

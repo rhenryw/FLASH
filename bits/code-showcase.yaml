@@ -1,0 +1,121 @@
+Name: code-showcase
+CSS: |
+  [data-bit="code-showcase"] {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+    width: 100%;
+  }
+  [data-bit="code-showcase"] .showcase-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  [data-bit="code-showcase"] .showcase-title {
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 1rem;
+  }
+  [data-bit="code-showcase"] .showcase-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #94a3b8;
+    margin-bottom: 3rem;
+  }
+  [data-bit="code-showcase"] .code-window {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  [data-bit="code-showcase"] .code-header {
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  [data-bit="code-showcase"] .code-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  [data-bit="code-showcase"] .code-dot:nth-child(1) { background: #ff5f56; }
+  [data-bit="code-showcase"] .code-dot:nth-child(2) { background: #ffbd2e; }
+  [data-bit="code-showcase"] .code-dot:nth-child(3) { background: #27c93f; }
+  [data-bit="code-showcase"] .code-filename {
+    margin-left: 1rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-family: 'Courier New', monospace;
+  }
+  [data-bit="code-showcase"] .code-content {
+    padding: 2rem;
+    overflow-x: auto;
+  }
+  [data-bit="code-showcase"] pre {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+  [data-bit="code-showcase"] .code-comment { color: #6b7280; }
+  [data-bit="code-showcase"] .code-key { color: #f472b6; }
+  [data-bit="code-showcase"] .code-value { color: #a5f3fc; }
+  [data-bit="code-showcase"] .code-string { color: #86efac; }
+  [data-bit="code-showcase"] .code-number { color: #fbbf24; }
+
+JS: |
+  const { container, config } = ctx;
+  
+  const title = config.title || 'Code Example';
+  const subtitle = config.subtitle || '';
+  const filename = config.filename || 'example.yaml';
+  const code = config.code || '';
+  
+  const wrapper = document.createElement('div');
+  wrapper.className = 'showcase-container';
+  
+  if (title) {
+    const titleEl = document.createElement('h2');
+    titleEl.className = 'showcase-title';
+    titleEl.textContent = title;
+    wrapper.appendChild(titleEl);
+  }
+  
+  if (subtitle) {
+    const subtitleEl = document.createElement('p');
+    subtitleEl.className = 'showcase-subtitle';
+    subtitleEl.textContent = subtitle;
+    wrapper.appendChild(subtitleEl);
+  }
+  
+  const codeWindow = document.createElement('div');
+  codeWindow.className = 'code-window';
+  
+  const header = document.createElement('div');
+  header.className = 'code-header';
+  header.innerHTML = `
+    <span class="code-dot"></span>
+    <span class="code-dot"></span>
+    <span class="code-dot"></span>
+    <span class="code-filename">${filename}</span>
+  `;
+  
+  const content = document.createElement('div');
+  content.className = 'code-content';
+  
+  const pre = document.createElement('pre');
+  const codeEl = document.createElement('code');
+  codeEl.textContent = code;
+  pre.appendChild(codeEl);
+  content.appendChild(pre);
+  
+  codeWindow.appendChild(header);
+  codeWindow.appendChild(content);
+  wrapper.appendChild(codeWindow);
+  container.appendChild(wrapper);

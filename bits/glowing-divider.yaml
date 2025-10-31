@@ -1,0 +1,68 @@
+Name: glowing-divider
+CSS: |
+  [data-bit="glowing-divider"] {
+    padding: 2rem 0;
+    background: #0B0B0F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  [data-bit="glowing-divider"] .divider-line {
+    width: 100%;
+    max-width: 600px;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(102, 126, 234, 0.2) 20%, 
+      rgba(102, 126, 234, 0.6) 50%, 
+      rgba(118, 75, 162, 0.6) 50%,
+      rgba(118, 75, 162, 0.2) 80%, 
+      transparent 100%);
+    position: relative;
+    overflow: visible;
+  }
+  [data-bit="glowing-divider"] .divider-line::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.8) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  [data-bit="glowing-divider"] .divider-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    color: #667eea;
+    background: #0B0B0F;
+    padding: 0.5rem;
+    border-radius: 50%;
+    z-index: 1;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
+  }
+
+JS: |
+  const { container, config } = ctx;
+  
+  const wrapper = document.createElement('div');
+  wrapper.className = 'divider-line';
+  wrapper.style.maxWidth = config.width || '600px';
+  
+  if (config.icon) {
+    const icon = document.createElement('span');
+    icon.className = 'divider-icon';
+    icon.textContent = config.icon;
+    wrapper.appendChild(icon);
+  }
+  
+  container.appendChild(wrapper);

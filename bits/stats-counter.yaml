@@ -1,0 +1,163 @@
+Name: stats-counter
+CSS: |
+  [data-bit="stats-counter"] {
+    padding: 5rem 2rem;
+    background: linear-gradient(180deg, #0B0B0F 0%, #0f0f14 50%, #0B0B0F 100%);
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+  [data-bit="stats-counter"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  [data-bit="stats-counter"] .stats-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  [data-bit="stats-counter"] .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 3rem;
+    text-align: center;
+  }
+  [data-bit="stats-counter"] .stat-item {
+    position: relative;
+    padding: 2rem;
+  }
+  [data-bit="stats-counter"] .stat-number {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  [data-bit="stats-counter"] .stat-label {
+    font-size: 1.2rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  [data-bit="stats-counter"] .stat-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+    filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.5));
+  }
+
+JS: |
+  const { container, config } = ctx;
+  
+  const stats = config.stats || [];
+  
+  const wrapper = document.createElement('div');
+  wrapper.className = 'stats-container';
+  
+  const grid = document.createElement('div');
+  grid.className = 'stats-grid';
+  
+  stats.forEach(stat => {
+    const item = document.createElement('div');
+    item.className = 'stat-item';
+    
+    if (stat.icon) {
+      const icon = document.createElement('span');
+      icon.className = 'stat-icon';
+      icon.textContent = stat.icon;
+      item.appendChild(icon);
+    }
+    
+    const number = document.createElement('span');
+    number.className = 'stat-number';
+    number.textContent = '0';
+    item.appendChild(number);
+    
+    const label = document.createElement('div');
+    label.className = 'stat-label';
+    label.textContent = stat.label || '';
+    item.appendChild(label);
+    
+    grid.appendChild(item);
+    
+    // Fetch from API if specified
+    if (stat.api) {
+      fetch(stat.api)
+        .then(res => res.json())
+        .then(data => {
+          const targetValue = parseInt(data.total) || 0;
+          animateCounter(number, targetValue, stat.suffix || '', false);
+        })
+        .catch(() => {
+          const targetValue = parseInt(stat.value) || 0;
+          animateCounter(number, targetValue, stat.suffix || '', false);
+        });
+    } else {
+      const targetValue = parseInt(stat.value) || 0;
+      const countDown = targetValue === 0;
+      
+      // Animate counter on scroll into view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCounter(number, targetValue, stat.suffix || '', countDown);
+            observer.unobserve(item);
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      observer.observe(item);
+    }
+  });
+  
+  function animateCounter(element, target, suffix, countDown = false) {
+    const duration = 2000;
+    const steps = 60;
+    
+    if (countDown && target === 0) {
+      // Count down from 100 to 0
+      const startValue = 100;
+      const increment = startValue / steps;
+      let current = startValue;
+      let step = 0;
+      
+      const interval = setInterval(() => {
+        current -= increment;
+        step++;
+        if (step >= steps) {
+          current = 0;
+          clearInterval(interval);
+        }
+        element.textContent = Math.max(0, Math.floor(current)).toLocaleString() + suffix;
+      }, duration / steps);
+    } else {
+      // Count up normally
+      const increment = target / steps;
+      let current = 0;
+      let step = 0;
+      
+      const interval = setInterval(() => {
+        current += increment;
+        step++;
+        if (step >= steps) {
+          current = target;
+          clearInterval(interval);
+        }
+        element.textContent = Math.floor(current).toLocaleString() + suffix;
+      }, duration / steps);
+    }
+  }
+  
+  wrapper.appendChild(grid);
+  container.appendChild(wrapper);
